@@ -1,0 +1,161 @@
+.col-settings,
+.col-settings-12{
+  position: relative;
+  width: 100%;
+  max-width: 610px;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+
+  &.col-settings-12 {
+    max-width: none;
+  }
+
+  .footer-actions {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 4px;
+    border-top: 1px solid #fff;
+
+    a {
+      color: #fff;
+      // font-size: 80%;
+      cursor: pointer;
+      font-weight: 300;
+
+      span {
+        text-decoration: underline;
+      }
+
+      i {
+        vertical-align: middle;
+      }
+    }
+
+    .next {
+      margin-left: auto;
+
+      i {
+        margin-left: 3px;
+      }
+    }
+    .back {
+      i {
+        margin-right: 3px;
+      }
+    }
+  }
+}
+
+.secondary-content {
+  .underline {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 2px !important;
+    margin-bottom: 20px;
+  }
+
+  .info-txt {
+    margin: 0;
+    padding: 0;
+    font-size: 90%;
+    font-weight: 300;
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  label {
+    font-size: 90%;
+    margin-bottom: 2px;
+  }
+
+  .clear-bottom {
+    margin-bottom: 0;
+  }
+
+  .badge.round {
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    vertical-align: middle;
+    line-height: 15px;
+    font-size: 10px;
+  }
+
+  .cnt-select-container {
+    margin-top: 20px;
+
+    .country-select .selected-flag {
+      background: #f6f6f6;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      border-right: #ededed;
+    }
+
+    .form-group {
+      display: flex;
+      justify-content: space-between;
+
+      .btn {
+        margin: 0 0 0 5px;
+      }
+    }
+  }
+
+  .btn {
+    background: @color-app;
+    width: 120px;
+    margin-bottom: 20px;
+    color: #fff;
+
+    &:hover {
+      background: darken(@color-app, 10%);
+    }
+  }
+}
+
+.info-label-blue,
+.info-label-orange {
+  display: inline-block;
+  padding: 10px;
+  margin: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #fff;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #60b3de;
+  border-radius: 4px;
+
+  &.info-label-red {
+    background-color: #f1a2a2;
+  }
+
+  &.large {
+    font-size: 18px;
+    font-weight: 300;
+    padding: 12px;
+    margin-top: 15px;
+
+    a {
+      font-weight: bold;
+      margin-left: 5px;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+
+
+
+
+

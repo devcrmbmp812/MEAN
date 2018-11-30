@@ -1,0 +1,129 @@
+extends layout
+
+append head
+  script.
+    require([
+      'angular',
+      'controllers/transferSettings',
+      'directives/fileRead'
+    ],
+    function (angular, TransferSettingsController, onReadFile) {
+      var app = angular.module('voxrec-frontend', [])
+        .controller('TransferSettingsController', TransferSettingsController)
+        .directive('onReadFile', onReadFile);
+
+      angular.bootstrap(document, ['voxrec-frontend']);
+    });
+
+block content
+  .site-wrapper-inner.home-wrap.transfer-settings.edit-recording
+    .container(ng-controller="TransferSettingsController" ng-init="wirePlugins()")
+      .row
+        .col-settings
+          form#form
+            .register-content.ng-cloak
+              h4 Call Transfer Settings
+              br
+              //-
+                .input-group.transfer-email
+                  label E-mail
+                    span.badge(data-toggle='tooltip' data-placement="right" title="Where to email your recordings") ?
+                  input(value=`${email}` type="text" class="form-control" disabled)
+                .message We will send an email with your recording to this address. Please make sure to check your SPAM and allow emails from recording@voxconf.io
+
+              .none-div
+                .dropdown-heading
+                  input(type="radio" id="transferSettings1"
+                       name="transferSettings" value="None")
+                  label.collapsed.title-toggle(for="transferSettings1" data-toggle="collapse" data-target="#NoneSettings" href="#bridgeSettings") None
+
+                #NoneSettings.collapse
+
+              .s3-div
+                .dropdown-heading
+                  input(type="radio" name="transferSettings" id="transferSettings2" value="S3")
+                  label.collapsed.title-toggle(for="transferSettings2" data-toggle="collapse" data-target="#S3Settings" href="#bridgeSettings") Amazon Web Services S3
+
+                #S3Settings.collapse
+                  a(href="https://developers.voxbone.com/how-to/configure-aws-for-recording" target="_blank") How do I configure my bucket?
+                  .form-group.checkbox
+                    label
+                      input(type="checkbox" ng-model="transferSettings.s3.enabled")
+                      | Enable uploading recordings to my bucket on AWS S3
+                      span.badge(data-toggle='tooltip' data-placement="right" title="Enable uploading recordings to my bucket on AWS S3") ?
+
+                  .form-group
+                    label Bucket name
+                    input(type="text" class="form-control" ng-model="transferSettings.s3.server" ng-disabled="!transferSettings.s3.enabled")
+
+                  .form-group
+                    label Path
+                      em (optional)
+                    input(type="text" class="form-control" ng-model="transferSettings.s3.path" ng-disabled="!transferSettings.s3.enabled")
+                    span: em You can specify a directory path to upload recordings to. Leave empty to upload to the root of the bucket.
+                      strong Note: path must already exist in the bucket.
+
+                  .form-group
+                    label AWS Access Key ID
+                    input(type="text" class="form-control" ng-model="transferSettings.s3.accessKey" ng-disabled="!transferSettings.s3.enabled")
+
+                  .form-group
+                    label AWS Secret Access Key
+                    input(type="password" class="form-control" ng-model="transferSettings.s3.accessSecret" ng-disabled="!transferSettings.s3.enabled")
+
+                  .form-group
+                    label Region
+                      span.badge(data-toggle='tooltip' data-placement="right" ng-model="transferSettings.s3.region" title="The region the bucket was created on") ?
+                    select(class="form-control" ng-model="transferSettings.s3.region" ng-disabled="!transferSettings.s3.enabled")
+                      option(ng-repeat="region in s3.regions" value="{{region.value}}" ng-disabled="{{region.disabled}}") {{region.display}}
+
+              .gcs-div
+                .dropdown-heading
+                  input(type="radio" name="transferSettings" id="transferSettings3" value="GCS")
+                  label.collapsed.title-toggle(for="transferSettings3" data-toggle="collapse" data-target="#GcsSettings" href="#bridgeSettings") Google Cloud Storage
+
+                #GcsSettings.collapse
+                  .form-group.checkbox
+                    label
+                      input(type="checkbox" ng-model="transferSettings.gcs.enabled")
+                      | Enable uploading recordings to Google Cloud Storage
+                      span.badge(data-toggle='tooltip' data-placement="right" title="Enable uploading recordings to my bucket on Google Cloud Storage") ?
+
+                  .form-group
+                    label Bucket Name
+                    input(type="text" class="form-control" ng-disabled="!transferSettings.gcs.enabled" ng-model="transferSettings.gcs.server")
+
+                  .form-group
+                    label GCS Key File
+
+                    input(type="file" ng-disabled="!transferSettings.gcs.enabled" on-read-file="validateKeyfile($fileContent)")
+
+                  .text-center.error-label.alert(ng-class="keyFileMsgClass") {{ keyFileMsg }}
+
+              .azure-div
+                .dropdown-heading
+                  input(type="radio" disabled)
+                  a Microsoft Azure Storage (coming soon)
+
+              .sftp-div
+                .dropdown-heading
+                  input(type="radio" disabled)
+                  a SFTP (coming soon)
+
+              .text-center.save-button
+                button.btn.btn-default-custom.btn-block(ng-click="saveChanges()" ng-disabled="!isSaveEnabled()") {{ saveButtonText }}
+
+              .text-center.error-label(ng-show="savingError") Transfer settings could not be saved.
+                br
+                | Please try again
+              .text-center.success-label(ng-show="savedSuccessfully") Transfer settings successfully applied.
+
+              .footer-actions
+                a.back(onclick="location.href='/profile'")
+                  i.fa.fa-arrow-left
+                  span
+                    |Edit Profile
+                a.next(onclick="location.href='/transcriptions'")
+                  span
+                    |Call and View Transcriptions
+                  i.fa.fa-arrow-right

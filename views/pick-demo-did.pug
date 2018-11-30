@@ -1,0 +1,49 @@
+extends layout
+
+append head
+  link(rel="stylesheet" href="/lib/country-select-js/build/css/countrySelect.min.css")
+  script.
+    require(
+      ['domReady', 'angular', 'controllers/pickPhone', 'bootstrap'],
+      function (domReady, angular, PickPhoneController) {
+        domReady(function () {
+          angular.module('voxbone-ai-frontend', []).controller('PickPhoneController', PickPhoneController);
+          angular.bootstrap(document, ['voxbone-ai-frontend']);
+        });
+    });
+
+block content
+  body(ng-controller="PickPhoneController")
+    .body
+      .site-wrapper-inner.home-wrap
+        .container
+          .row
+            .col-settings
+              .secondary-content.secondary-content-block.clearfix.ng-cloak
+                h3.underline Select a DID
+                p.info-txt - Choose from the list of available phone numbers.
+                p.info-txt - Numbers and calls are 100% free for testing.
+                .alert-container.alert.text-center(class = "alert-{{apiAlert.cssType}}" ng-show="apiAlert.message") {{apiAlert.message}}
+                .cnt-select-container(ng-hide="showCountryPickers")
+                  span.info-label-blue(ng-show="didRetrieveMessage") {{didRetrieveMessage}}
+
+                .row
+                  .col-sm-12(ng-show="showCountryPickers")
+                    .cnt-select-container
+                      .form-group
+                        input#country1.countrySelector.form-control(type="text")
+                        a.btn(ng-click="linkDIDs()")
+                          |Save DID
+
+                    .info-label-blue Your DID #:
+                      span {{DID1}}
+
+                p.info-txt - Need more numbers, different countries, or want to use your existing Voxbone DIDs? #[a(target="_blank" href="mailto:workshop@voxbone.com?subject=voxbone.ai - DID request&body=I would like a specific DID that is not in the list.") Contact Us]
+
+                .footer-actions
+                  a.next(onclick="location.href='/add-sip'")
+                    span
+                      |Add a SIP address
+                    i.fa.fa-arrow-right
+
+

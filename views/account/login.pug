@@ -1,0 +1,55 @@
+extends ../layout
+
+append head
+  script.
+    require(
+      ['angular', 'jquery', 'controllers/login', 'bootstrap'],
+      function (angular, $, LoginController) {
+        angular.module('voxbone-ai-frontend', [])
+          .controller('LoginController', LoginController);
+        angular.bootstrap(document, ['voxbone-ai-frontend']);
+      });
+
+block content
+  .site-wrapper-inner.home-wrap
+    .body-login
+      .container
+        .row
+          .col-sm-12
+            .register-content
+              //- span
+                #[strong Note for current Voxbone customers:] you can login with your Voxbone portal account. The DIDs and services used here are independent of your Voxbone account. To add recording to an existing DID, please #[a(href="mailto:workshop@voxbone.com") contact us]
+
+              .formWrap
+                .oauth-wrap
+                  h4.text-center Login with:
+                  include social-buttons
+
+                h4.sub-header or enter your details below:
+
+                form#login_form(ng-controller="LoginController" ng-init=`login.uloginemail='${email || ''}'` name="login_form" novalidate)
+                  .form-group
+                    label.control-label Email
+                    input.form-control(placeholder="email@example.com" type="email" id="uloginemail" name="uloginemail" ng-model="login.uloginemail" required)
+                    .ng-cloak(ng-show="login_form.$submitted || login_form.uloginemail.$touched")
+                      .error-label(ng-show="login_form.uloginemail.$error.required") Email is required
+                    .ng-cloak(ng-show="login_form.uloginemail.$dirty && login_form.uloginemail.$invalid")
+                      .error-label(ng-show="login_form.uemail.$error.email") Email is invalid
+                  .form-group
+                    label.control-label Password
+                    input.form-control(placeholder="Your Password" type="password", id="uloginpassword", name="uloginpassword", ng-model="login.uloginpassword", required)
+                    .ng-cloak(ng-show="login_form.$submitted || login_form.uloginpassword.$touched")
+                      .error-label(ng-show="login_form.uloginpassword.$error.required") Password is required
+
+                  while m = message.shift()
+                    #tokenError.alert(class='alert-' + m.type)
+                      div= m.message
+
+                  #alert-user-pass.alert.alert-danger.hidden Incorrect Email or Password, try again.
+                  #alert-unverified.alert.alert-danger.hidden Unverified account. Please check your inbox to validate your email address.
+
+                  a.btn.btn-default-custom#login(ng-disabled="login_form.$invalid" ng-click="login.processForm()") Login
+                  span
+                    a(href="/account/forgot") Forgot your password?
+                    br
+                    a(href="/account/signup") Sign up here

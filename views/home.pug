@@ -1,0 +1,360 @@
+extends layout
+
+block call-did
+
+append head
+  script(src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit" async defer)
+
+block unauthenticated-navbar
+  ul.nav.navbar-nav
+    li.nav-item
+      a.nav-item.nav-link(href="/faq") Learn More
+    li.nav-item
+      a.nav-link(href="/partner-opportunity") Partner Opportunity
+    li.nav-item
+      a.scroll.nav-item.nav-link(href="#usecases") Try a Demo
+    li.nav-item
+      a.scroll.nav-item.nav-link(href="#register") Login / Register
+
+block footer
+
+append head
+  script.
+    require([
+      'angular-recaptcha',
+      'angular',
+      'jquery',
+      'controllers/home',
+      'controllers/signup',
+      'controllers/login',
+      'directives/password.check',
+      'directives/password.strength',
+      'bootstrap',
+      'click2vox'
+      ],
+      function (
+        vcRecaptcha, angular, $, HomeController, SignUpController, LoginController, passwordCheck, passwordStrength) {
+
+        angular.module('voxbone-ai-frontend', ['vcRecaptcha'])
+          .directive('pwCheck', passwordCheck)
+          .directive('passwordStrength', passwordStrength)
+          .controller('HomeController', HomeController)
+          .controller('SignUpController', SignUpController)
+          .controller('LoginController', LoginController);
+        angular.bootstrap(document, ['voxbone-ai-frontend']);
+      });
+
+block content
+  div(id="setup" ng-controller="HomeController")
+  .site-wrapper-inner.home-wrap
+    .container
+      .row.banner-content
+        .col-sm-12.col-md-9
+          h1 Speech Analytics on your DIDs
+          h2 Provide actionable intelligence on your calls
+          p.
+            Speech recognition and natural language processing technologies improved rapidly in terms of accuracy and cost efficiency.
+            Now it is more practical than ever to enhance your telephony services with speech analytics.
+            Voxbone's speech analytics technology partners provide high quality speech recognition and analytics services for a wide variety of applications like
+            transcription, monitoring for sales effectiveness or dealing with sensitive data.
+          p.
+            With readily available integrations built right into the network, Voxbone's speech recognition optimized cloud recorder lets you easily add speech analytics to Voxbone's trusted DID services.
+          p.
+            Check out our #[a.text-link(href='/faq') FAQ] to learn how Recording for Speech Analytics will benefit you or click below to try it on a free test DID.
+          .header-actions
+            a.scroll.btn.btn-mid.btn-voxrec(href="#register") Sign up to try
+
+  .use-cases#usecases
+    .container
+      .row
+        .col-xs-12
+          h3 Popular
+            span  Applications
+      .row
+        .col-xs-12.col-sm-6.col-md-4.col-lg-3
+          .setup-grid.setup-inside-block.box
+            img.img-responsive(alt="Telephony Speech-To-Text" src="/images/popular-apps/1.png")
+            h5 Telephony #[span.last-word Speech-To-Text]
+            p.use-cases-text Easily convert speech to text with pre-built integrations with a variety of speech engines
+            if authenticated
+              a.btn.btn-demo.btn-mid(href="/transcriptions?demo=true") Demo Me
+            else
+              a.btn.btn-demo.btn-mid(href="#register") Demo Me
+
+        .col-xs-12.col-sm-6.col-md-4.col-lg-3
+          .setup-grid.setup-inside-block.box
+            img.img-responsive(alt="Transcribe in Real Time" src="/images/popular-apps/2.png")
+            h5 Transcribe in #[span.last-word Real Time]
+            p.use-cases-text Transcribe in real time to extract immediately actionable data from your calls
+
+            a.btn.btn-demo.btn-mid(href="/live-transcripts") Demo Me
+
+        .col-xs-12.col-sm-6.col-md-4.col-lg-3
+          .setup-grid.setup-inside-block.box
+            .ribbon
+              span Brand New!
+            img.img-responsive(alt="Monitor Sentiment" src="/images/popular-apps/3.png")
+            h5 Monitor #[span.last-word Sentiment]
+            p.use-cases-text Monitor the mood of your customers and agents to assessment customer happiness and identify issues.
+
+            if authenticated
+              a.btn.btn-demo.btn-mid(href="#" data-toggle="modal" data-target="#demoTranscriptions") Demo Me
+            else
+              a.btn.btn-demo.btn-mid(href="/login-demo") Demo Me
+
+        .col-xs-12.col-sm-6.col-md-4.col-lg-3
+          .setup-grid.setup-inside-block.box
+            img.img-responsive(alt="Keyword Spotting" src="/images/popular-apps/4.png")
+            h5 Keyword #[span.last-word Spotting]
+            p.use-cases-text Identify key words or topics are spoken to ensure compliance and measure script adherence.
+
+            if process.env.SHOW_DEMO_BUTTONS === 'false'
+              a.btn.btn-demo.btn-mid(href="https://calendly.com/fikri/analytics-use-cases/" target="_blank") Request a Demo
+            else
+              if authenticated
+                a.btn.btn-demo.btn-mid(href="/transcriptions") Demo Me
+              else
+                a.btn.btn-demo.btn-mid(href="#register") Demo Me
+
+        .col-xs-12.col-sm-6.col-md-4.col-lg-3
+          .setup-grid.setup-inside-block.box
+            img.img-responsive(alt="Analyze Talk Time" src="/images/popular-apps/5.png")
+            h5 Analyze #[span.last-word Talk Time]
+            p.use-cases-text Measure talk time, silence, and talk over to flag problems and identify best practices
+            if authenticated
+              a.btn.btn-demo.btn-mid(href="/transcriptions") Demo Me
+            else
+              a.btn.btn-demo.btn-mid(href="#register") Demo Me
+
+        .col-xs-12.col-sm-6.col-md-4.col-lg-3
+          .setup-grid.setup-inside-block.box
+            .ribbon
+              span Coming Soon
+            img.img-responsive(alt="Post Call Surveys" src="/images/popular-apps/6.png")
+            h5 Post Call #[span.last-word Surveys]
+            p.use-cases-text Turn boring post-call surveys into quick, open ended responses with automatic data extraction
+
+        .col-xs-12.col-sm-6.col-md-4.col-lg-3
+          .setup-grid.setup-inside-block.box
+            .ribbon
+              span Coming Soon
+            img.img-responsive(alt="In-Call AI Assistant" src="/images/popular-apps/7.png")
+            h5 In-Call #[span.last-word AI Assistant]
+            p.use-cases-text Connect your phone calls with popular AI assistants to let users make general queries and enable skills.
+
+  .home-setup#setup
+    .container
+      .row
+        .col-xs-12
+          h3 Key
+            span  Benefits
+      .row
+        .col-md-3
+          .setup-grid.setup-inside-block
+
+            img.img-responsive(alt="Cash" src="../../images/cash.png")
+            h5 #[span.first-word Increase] Sales
+            p.use-cases-text Drive sales growth by identifying the most effective sales pitches, proactively warn your agents against common stumbling blocks, and automatically identify when coaching is needed.
+        .col-md-3
+          .setup-grid.setup-inside-block
+            img.img-responsive(alt="Call" src="../../images/call.png")
+            h5 #[span.first-word Agent] Performance
+            p.use-cases-text Speech analytics reports can deeply analyze an agent's efficiency. This data helps you create targeted agent training that optimizes call center ROI.
+        .col-md-3
+          .setup-grid.setup-inside-block
+            img.img-responsive(alt="Lock" src="../../images/lock.png")
+            h5 #[span.first-word Ensure] 100% Compliance
+            p.use-cases-text High quality recordings with transcription and language processing allow for automatic identification of sensitive data and even redaction on each and every call.
+        .col-md-3
+          .setup-grid.setup-inside-block
+            img.img-responsive(alt="Hands" src="../../images/hands.png")
+            h5 #[span.first-word Enhance] The Customer Experience
+            p.use-cases-text Categorize 100% of inbound calls by root causes, such as product failure or incorrect billing. Then use this data to develop targeted operational improvements.
+        .col-xs-12
+          .header-actions
+            a.btn.btn-mid.btn-voxrec(href="/faq") Learn More
+            a.btn.btn-mid.btn-voxrec(href="#" data-toggle="modal" data-target="#contactUs") Contact Us
+
+  .home-register#register
+    .container
+      .row
+        .col-xs-12
+          h3 Login / Register to Try a Demo with a Personal Test DID
+          h5 Get a free test DID and access to experiment with configuration options when you login
+        .col-md-6
+          .register-block
+            h5 Login
+            span.
+              #[strong Note for current Voxbone customers:] you can login with your Voxbone portal account. The DIDs and services used on Voxbone.ai are independent of your Voxbone account. To add this features to an existing DID, please #[a#contact-us(href="mailto:workshop@voxbone.com") contact us]
+            .formWrap
+              .oauth-wrap
+                h4.text-center Login with:
+                include account/social-buttons
+
+              h4.sub-header or enter your details below:
+
+            form#login_form(ng-controller="LoginController" ng-init=`login.uloginemail='${email || ''}'` name="login_form" novalidate)
+              .form-group
+                label.control-label Email
+                input.form-control(type="email" id="uloginemail" name="uloginemail" ng-model="login.uloginemail" placeholder="you@company.com" required)
+                .ng-cloak(ng-show="login_form.$submitted || login_form.uloginemail.$touched")
+                  .error-label(ng-show="login_form.uloginemail.$error.required") Email is required
+                .ng-cloak(ng-show="login_form.uloginemail.$dirty && login_form.uloginemail.$invalid")
+                  .error-label(ng-show="login_form.uloginemail.$error.email") Email is invalid
+              .form-group
+                label.control-label Password
+                input.form-control(type="password" id="uloginpassword" name="uloginpassword" ng-model="login.uloginpassword" placeholder="Your password" required)
+                .ng-cloak(ng-show="login_form.$submitted || login_form.uloginpassword.$touched")
+                  .error-label(ng-show="login_form.uloginpassword.$error.required") Password is required
+              a.btn.btn-voxrec#login(href="#" ng-disabled="login_form.$invalid" ng-click="login.processForm($event)") Login
+              br
+              a#home-link(href="/account/forgot") Forgot your password?
+
+            while m = message.shift()
+              #tokenError.alert(class='alert-' + m.type)
+                div= m.message
+            #alert-user-pass.alert.alert-danger.hidden Incorrect Email or Password, try again.
+            #alert-unverified.alert.alert-danger.hidden Unverified account. Please check your inbox to validate your email address.
+
+        .col-md-6
+          .register-block
+            h5 Create Account
+            form#create_account(ng-controller="SignUpController" name="create_account" ng-init=`account.uemail='${email || ""}'` novalidate)
+              .form-group
+                label.control-label First Name
+                input.form-control(type="text" id="ufirstname" name="ufirstname" placeholder="First Name" ng-model="account.ufirstname" required)
+                .error-label(ng-show="create_account.$submitted || create_account.ufirstname.$touched")
+                  .ng-hide(ng-show="create_account.ufirstname.$error.required") Please enter your first name
+              .form-group
+                label.control-label Last Name
+                input.form-control(type="text" id="ulastname" name="ulastname" placeholder="Last Name" ng-model="account.ulastname" required)
+                .error-label(ng-show="create_account.$submitted || create_account.ulastname.$touched")
+                  .ng-hide(ng-show="create_account.ulastname.$error.required") Please enter your last name
+              .form-group
+                label.control-label Company
+                input.form-control(type="text" id="ucompany" name="ucompany" placeholder="Company" ng-model="account.ucompany")
+              .form-group
+                label.control-label Phone Number (optional)
+                input.form-control(type="text" id="uphone" name="uphone" placeholder="Phone Number" ng-model="account.uphone")
+              .form-group
+                label.control-label Email address
+                input.form-control(type="text" id="uemail" name="uemail" placeholder="you@company.com" ng-model="account.uemail" required)
+                .error-label(ng-show="create_account.$submitted || create_account.uemail.$touched")
+                  .ng-hide(ng-show="create_account.uemail.$error.required") Email is required
+
+              .form-group
+                label.control-label Password
+                input.form-control(type="password" id="upassword" name="upassword" placeholder="Password" ng-model="account.upassword" required password-strength="account.upassword")
+                .progress.passwordStrength.ng-hide(ng-show="create_account.upassword.$dirty")
+                  .progress-bar(role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{strength_percent}}%" class="{{strength_class}}")
+                    span Strength: {{strength}}!
+                .error-label(ng-show="create_account.$submitted || create_account.upassword.$touched")
+                  .ng-hide(ng-show="create_account.upassword.$error.required") Password is required
+                  .ng-hide(ng-show="create_account.upassword.$error.minlength") Password must be at least 8 characters in length
+
+              .form-group
+                label.control-label Confirm Password
+                input.form-control(type="password" id="confirmation" name="confirmation" placeholder="Confirm Password" ng-model="account.confirmation" required pw-check="upassword")
+                .error-label(ng-show="create_account.$submitted || create_account.confirmation.$touched")
+                  .ng-hide(ng-show="create_account.confirmation.$error.pwmatch") Password confirmation does not match
+
+              .form-group.text-center
+                - var recaptcha_key = `\'${process.env.GOOGLE_RECAPTCHA_SITE_KEY}\'`
+                .captcha(ng-model="account.recaptcha" vc-recaptcha key=recaptcha_key)
+              .form-group
+                label.control-label
+                  input(type="checkbox" id="uaup" name="uaup" ng-model="account.uaup" required)
+                  |&nbsp;
+                  span You must accept our #[a#home-link(href="https://www.voxbone.com/acceptable-use-policy") User Policy]
+              .form-group
+                a.btn.btn-voxrec#create(href="#" ng-disabled="create_account.$invalid" ng-click="processForm($event)") Create Account
+            #alert-error.alert.alert-danger.hidden
+            #alert-info.alert.alert-info.hidden
+
+      .row.hidden
+        .col-xs-12
+          h5 Not Ready to Share your details? You can still get a preview
+
+        .col-xs-12.text-center
+          a.btn.btn-mid.btn-voxrec(href="/demo") Try a Static Demo
+
+  .home-partners#parners
+    .container
+      .row
+        .col-xs-12
+          h3 Speech Analytics
+            span  Partners
+
+      .row
+        .col-md-4.col-xs-12
+          .setup-grid.setup-inside-block.partner-box
+            a(target="_blank" href="https://voicebase.com")
+              img.img-responsive(src="/images/partners/logo-voicebase.png" alt="VoiceBase")
+        .col-md-4.col-xs-12
+          .setup-grid.setup-inside-block.partner-box
+            a(target="_blank" href="https://callminer.com")
+              img.img-responsive(src="/images/partners/logo-callminer.png" alt="CallMiner")
+        .col-md-4.col-xs-12
+          .setup-grid.setup-inside-block.partner-box
+            a(target="_blank" href="https://gridspace.com")
+              img.img-responsive(src="/images/partners/logo-gridspace.png" alt="Gridspace")
+
+  .contact#contact
+    .container
+      .padding-contact
+        .row
+          .col-md-4.address
+            h3 Address
+            address
+              |535 Mission St
+              br
+              |San Francisco
+              br
+              |CA 94105
+              br
+              |USA #[span Tel: +1 415 520 505]
+              button.btn.btn-footer(onclick="document.getElementById('launch_call').click();" type="submit") Click2Call
+              span
+                a(href="https://www.voxbone.com/" target="_blank")
+                  img(alt="By Voxbone" src="//cdn.voxbone.com/workshop-voxbone-com/by_voxbone.png")
+
+          .col-md-4
+            h3 Links
+            ul.links
+              li
+                a(href="https://www.voxbone.com/" target="blank") Voxbone Website
+              li
+                a(href="http://blog.voxbone.com/" target="blank") Voxbone Blog
+              li
+                a(href="https://developers.voxbone.com/" target="blank") Voxbone Developers Platform
+              li
+                a(href="https://www.linkedin.com/company/voxbone" target="blank") Follow us on LinkedIn
+              li
+                a(href="https://plus.google.com/+VoxboneSA/posts" target="blank") Follow us on Google+
+              li
+                a(href="https://twitter.com/voxbone" target="blank") Follow us on Twitter
+              li
+                a(href="https://www.facebook.com/VoxboneSA" target="blank") Follow us on Facebook
+
+          .col-md-4.newsletter
+            h3 Stay in touch
+            form#newsletterForm
+              .form-group
+                label(for="name") Name
+                input.form-control(id="uname" placeholder="Name" type="text")
+                span.error-msg.name-invalid.hidden Please enter a proper name
+              .form-group
+                label(for="email") Email
+                input.form-control(id="uemail" placeholder="email@example.com" type="email")
+                span.error-msg.email-invalid.hidden Please enter a proper email address
+              button#newsletterSignUp.btn.btn-footer(type="submit") Sign up for Newsletter
+    .footer
+      include footer
+
+  include modals/voxrec-eol-modal
+  include modals/newsletter-modal
+  include modals/transcriptions-demo-modal
+
+  #voxButton_575b3d7e89005411004db935.voxButton(data-button_id='575b3d7e89005411004db935' data-text='click2vox Us Now' data-redirect_url='https://voxbone.com' data-did='883510080408' data-dial_pad='true' data-context='' data-send_digits='' data-caller_id='Click2Vox_voxboneai' data-incompatible_browser_configuration='hide_widget' data-show_frame='false' data-show_branding='false' data-use_default_button_css='false' data-div_css_class_name='hidden' data-test_setup='false' data-button_css_class_name='btn btn-purple')
+
+  include contact-voxbone

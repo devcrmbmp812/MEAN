@@ -1,0 +1,31 @@
+td
+  .pull-left(ng-show="part.admin")
+    span.glyphicon.glyphicon-king(data-toggle='tooltip' data-placement="right" title="Admin") &nbsp;
+  span {{ part.callerId }}
+  .pull-right
+    div(ng-show='part.line_type == undefined')
+      span.fa.fa-laptop(data-toggle='tooltip' data-placement="right" title="Web")
+    div(ng-show='part.line_type == "mobile"')
+      span.glyphicon.glyphicon-phone(data-toggle='tooltip' data-placement="right" title="{{part.line_type}}")
+    div(ng-show='part.line_type == "landline"')
+      span.glyphicon.glyphicon-phone-alt(data-toggle='tooltip' data-placement="right" title="{{part.line_type}}")
+
+td
+  span {{part.location || part.city || '-'}}
+
+td
+  div.flag-icon(ng-show="part.country_code || part.countryCode" class="flag-icon-{{part.country_code || part.countryCode}}" data-toggle='tooltip' data-placement="right" title="{{part.country_name || part.country}}")
+  span(ng-hide = "part.country_code || part.countryCode")
+
+td {{part.carrier || part.isp || '-'}}
+
+td
+  span(ng-show='part.line_type') {{part.didCalled || '-'}}
+  span(ng-hide='part.line_type') Web Caller
+
+td
+  span(am-time-ago="part.createdAt")
+
+td
+  span.glyphicon.glyphicon-ok(ng-show="part.forwarded")
+  span.glyphicon.glyphicon-remove(ng-hide="part.forwarded")

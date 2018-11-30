@@ -1,0 +1,80 @@
+/* ================================================
+Logo Font
+================================================ */
+
+@font-face {
+  font-family: "Kaleko205W00-Heavy";
+  src: url("fonts/kaleko205.eot");
+  src: url("fonts/kaleko205iefix.eot?#iefix") format("embedded-opentype"),
+  url("fonts/kaleko205.woff2") format("woff2"),
+  url("fonts/kaleko205.woff") format("woff"),
+  url("fonts/kaleko205.ttf") format("truetype"),
+  url("fonts/kaleko205.svg#Kaleko205W00-Bold") format("svg");
+}
+
+.page-title {
+  font-family: "Kaleko205W00-Heavy";
+
+  a {
+		position: relative;
+		display: inline-block;
+	  height:55px;
+		margin: 10px 0 0;
+    background-image: url('//cdn.voxbone.com/workshop-voxbone-com/by_voxbone.png');
+	  background-repeat: no-repeat;
+	  background-position: bottom right;
+	  background-size: 30%;
+    text-decoration: none;
+    color: white;
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  span {
+    color: @color-app;
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 520px) {
+	.page-title {
+
+	  a {
+		  font-size: 34px;
+		  height: 50px;
+		}
+	}
+}
+
+@media only screen and (max-width: 450px) {
+	.page-title {
+
+	  a {
+		  font-size: 30px;
+		  height: 50px;
+		  margin-top: 5px;
+		}
+
+	}
+
+	.navbar-toggler {
+		margin-top: 12px;
+	}
+}
+
+@media only screen and (max-width: 410px) {
+	.page-title {
+
+	  a {
+		  font-size: 20px;
+		  height: 45px;
+			margin-top: 0;
+		}
+	}
+
+	.navbar-toggler {
+		margin-top: 5xpx;
+	}
+}
+
+

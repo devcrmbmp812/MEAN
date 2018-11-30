@@ -1,0 +1,5 @@
+each did, index in dids
+  a(href=`tel:${did.did_number}`)
+    span.fa.fa-globe(ng-show=`'${did.country_iso2}' == 'wld'`)
+    div.flag-icon(ng-hide=`'${did.country_iso2}' == 'wld'` class=`flag-icon-${did.country_iso2}`)
+    | &nbsp; #{did.formatted_did}

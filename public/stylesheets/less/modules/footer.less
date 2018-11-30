@@ -1,0 +1,98 @@
+.contact {
+  background: @footer-color;
+  color: @color-white;
+}
+
+.padding-contact {
+  padding: 100px 0;
+  font-family: @secondary-font;
+  h3 {
+    color: @color-mid-grey;
+    font-family: @primary-font;
+    font-size: 24px;
+    font-weight: 300;
+    padding: 20px 0px 20px 0px;
+    text-transform: uppercase;
+  }
+  address {
+    font-size: 1.067em;
+    line-height: 24px;
+    font-weight: normal;
+    span {
+      display: block;
+      margin-top: 10px;
+    }
+  }
+
+  img {
+    max-height: 50%;
+    max-width: 50%;
+  }
+
+  .links {
+    margin: 0;
+    padding: 0;
+    li {
+      display: block;
+      text-align: left;
+      line-height: 24px;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      a {
+        text-decoration: none;
+        color: @color-white;
+        font-weight: normal;
+        &:hover {
+          color: @color-brown;
+        }
+      }
+    }
+  }
+  .newsletter {
+    form {
+      .btn {
+        max-width: 190px;
+        width: 100%;
+      }
+    }
+    label {
+      margin: 0;
+      font-weight: normal;
+    }
+  }
+}
+
+.footer {
+  padding: 0px 20px 50px 20px;
+  p {
+    font-size: 14px;
+    text-align: center;
+    font-weight: normal;
+    font-family: "Lato-Regular";
+    a {
+      color: @color-white;
+      text-decoration: none;
+      &:hover {
+        color: @color-brown;
+      }
+    }
+  }
+}
+
+.small-footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  padding: 0 !important;
+  background-color: fade(@color-app, 50%);
+  p {
+    margin-bottom: 0;
+  }
+  z-index: 5;
+  a {
+      &:hover {
+        color: @color-white !important;
+      }
+    }
+}

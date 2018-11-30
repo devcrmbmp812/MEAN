@@ -1,0 +1,19 @@
+.modal.fade.add-new-modal#enableAnalytics(tabindex="-1" role="dialog")
+  .modal.custom-modal.fade.in
+    .modal-dialog.custom-modal-dialog(role="document")
+      .modal-content.custom-modal-content.edit-sip
+        .modal-header.custom-modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true") ×
+          h4.modal-title.custom-modal-title(id="myModalLabel") Allowed traffic from our analytics platform?
+        .modal-body.custom-modal-body
+          p Speech Analytics uses the Voxbone Labs Virtual POPs. If your network is configured to limit incoming traffic from defined IP addresses then you must add the following addresses to your whitelist:
+            ul
+              li #{mediaServerIp}
+              li #{signalingServerIp}
+          span RTP should be permitted within the following port ranges: 10000 to 20000.
+
+          p Please #[a.text-link(href="mailto:labs@voxbone.com?subject=Voxbone.AI IP whitelisting" target="_blank") contact us] if you need any assistance.
+
+        .modal-footer.custom-modal-footer
+          button.btn.btn-default-custom(data-dismiss="modal") I've done that

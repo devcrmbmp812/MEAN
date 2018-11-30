@@ -1,0 +1,73 @@
+extends layout
+
+append head
+  link(rel="stylesheet" href="/lib/flag-icon-css/css/flag-icon.min.css")
+  script.
+    require([
+      'angular',
+      'angular-moment',
+      'angular-cookies',
+      'controllers/demo',
+      'click2vox'
+    ],
+    function (angular, angularMoment, ngCookies, DemoController) {
+      angular.module('voxbone-ai-frontend', ['angularMoment', 'ngCookies'])
+        .controller('DemoController', DemoController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block content
+  .site-wrapper-inner.home-wrap
+    .container(ng-controller="DemoController")
+      .register-content.ng-cloak
+        .voxButton#button(data-div_css_class_name="hidden" data-text="Call" data-did="undefined" data-caller_id=`Voxbone.ai_webCall` data-basic_auth="true" data-voxbone_webrtc_username=`${process.env.VOXBONE_WEBRTC_USERNAME}` data-voxbone_webrtc_password=`${process.env.VOXBONE_WEBRTC_PASSWORD}` data-send_digits="{{bridge.formattedDigits}}")
+        .text-center
+          span Call or click on the number below to dial into Voxbone's IVR and generate your recording. Then you can download and play your recording from the list. To get your own demo number and add your own SIP URI, please sign-up. #[a(target="_blank" href="mailto:workshop@voxbone.com?subject=voxrec.me") Contact Us] for service and API details
+        .row
+          if did
+            button.well.bridge-number.text-center.btn-default-custom(ng-click=`callDID('${did}')` ng-show="isWebRTCSupported" ng-disabled="isJoinButtonDisabled()")
+              h5 {{joinButtonText}}
+              h6 Your DID #: #{did}
+          else
+            .well.bridge-number.text-center No linked DID
+        h4 Recordings
+        br
+        .row.recordings
+          .col-md-12
+            table.table.table-bordered
+              thead
+                tr
+                  th
+                    i.glyphicon.glyphicon-link
+                    span Connected SIP URI
+
+                  th
+                    i.glyphicon.glyphicon-time
+                    span {{ 'Started At ' }}
+
+                  th
+                    i.glyphicon.glyphicon-time
+                    span {{ 'Ended At ' }}
+
+                  th
+                    i.glyphicon.glyphicon-hourglass
+                    span {{ 'Duration ' }}
+
+                  th
+                    i.glyphicon.glyphicon-info-sign
+                    span {{  'Call Info'  }}
+
+              tbody.ng-cloak
+                tr.recording.text-center.ng-cloak(ng-repeat="call in calls")
+                  td {{call.remoteSipUri || '-'}}
+                  td
+                    span() {{call.createdAt | date:'medium'}}
+                  td
+                    span() {{call.endedAt | date:'medium'}}
+                  td
+                    span() {{call.duration | amDurationFormat : 'second'}}
+                  td
+                    a(href="#" data-toggle="modal" data-target="#configureHelp" ng-click="setSelectedCall(call.id)")
+                      span.i.glyphicon.glyphicon-info-sign
+          span.message
+      include modals/call-details-modal

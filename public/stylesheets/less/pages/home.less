@@ -1,0 +1,373 @@
+.row.color-boxes:before,
+.color-boxes.row:after {
+  width: 0px;
+  content: normal;
+}
+
+.home-wrap {
+  background: url(../images/vox-ai-bg.jpg) no-repeat right center fixed;
+  background-size: cover;
+}
+
+.touch {
+  text-align: left;
+  background-color: @panel-color;
+  color: @color-white;
+  font-weight: 100;
+  padding: 20px 25px;
+  .header {
+    .large {
+      font-size: 2.333em;
+    }
+    a {
+      color: @color-white;
+      text-decoration: underline;
+    }
+  }
+  .add-btn {
+    width: 230px;
+    margin: 20px 10px;
+  }
+  hr {
+    border-color: @color-white;
+  }
+  .toggle-extra {
+    a {
+      color: @color-white;
+    }
+    #flip {
+      padding-right: 30px;
+      background-image: url(../images/downarrow.png);
+      background-position: right center;
+      background-repeat: no-repeat;
+      background-size: 15px 10px;
+    }
+  }
+  .toggle-content {
+    display: none;
+    margin-top: 40px;
+    .row {
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+      span {}
+      a {
+        color: @color-white;
+        display: block;
+        &:hover {
+          color: @color-white;
+          text-decoration: underline;
+        }
+      }
+      .btn {
+        width: 130px;
+        height: 38px;
+      }
+    }
+    .tc-header {
+      span {
+        font-weight: 400;
+      }
+      .divider {
+        margin-top: 2px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, .2);
+      }
+    }
+  }
+}
+
+.banner-content,
+.banner-ctc {
+  h1 {
+    background: rgba(64, 62, 57, .7);
+    font-size: 2.333em;
+    color: @color-white;
+    margin: 0 100px 0 0;
+    padding: 20px 25px;
+    font-weight: 300;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  h2 {
+    padding: 20px 25px 0;
+  }
+  h2,
+  p {
+    font-size: 1.5em;
+    font-family: @secondary-font;
+    background: rgba(255, 255, 255, 0.8);
+    font-weight: normal;
+    margin: 0;
+    line-height: 1.4;
+    text-shadow: 1px 1px 1px rgba(150, 150, 150, 0.5);
+  }
+  p {
+    padding: 10px 25px;
+    font-size: 1em;
+    line-height: 30px;
+  }
+
+  .btn {
+    margin-top: 50px;
+  }
+}
+
+.home-setup,
+.use-cases,
+.home-partners {
+  padding: 50px 0 90px;
+  font-family: @secondary-font;
+  text-align: center;
+
+  h3 {
+    padding: 20px 0 65px;
+    font-size: 38px;
+    font-weight: 600;
+    color: @color-white;
+
+    span {
+      color: @color-app;
+    }
+  }
+
+  .setup-inside-block {
+    display: block;
+    border: 1px solid @color-white;
+    padding: 20px;
+    float: left;
+    width: 100%;
+    min-height: 100%;
+  }
+  .setup-grid {
+    background: @grid-color;
+    padding: 50px 10px;
+    border: 1px solid @color-white;
+    height: 100%;
+
+    img {
+      max-width: 140px;
+      display: inline-block;
+    }
+  }
+
+  .first-word, .last-word {
+    // padding: 0px !important;
+    color: @color-app;
+    display: block;
+  }
+
+  h5 {
+    font-family: @primary-font-light;
+    font-size: 22px;
+    font-weight: 100;
+    padding: 10px 5px 0px 5px;
+    text-transform: uppercase;
+    color: @color-white;
+    height: 120px;
+  }
+
+  p {
+    color: @color-white;
+    padding: 0px 10px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .btn {
+    min-width: 210px;
+    margin: 50px 10px 0;
+  }
+}
+
+.use-cases {
+  background: @dark-bg-color;
+
+  [class^="col-"] ,
+  [class*=" col-"] {
+    margin-bottom: 30px;
+  }
+
+  .setup-grid {
+    background: @grid-color;
+  }
+}
+
+.home-setup {
+  background: @color-grey;
+
+  .setup-grid {
+    border: 0;
+    background: @color-grey;
+  }
+}
+
+.home-register {
+  background: @color-white;
+  padding: 115px 0 90px;
+
+  h3,
+  h5 {
+    text-align: center;
+    padding: 25px 0;
+    font-weight: 600;
+    color: @color-black;
+
+    span {
+      color: @grid-color;
+    }
+  }
+
+  h3 {
+    font-size: 38px;
+  }
+
+  .register-block {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: @color-white;
+    border: 1px solid @color-register-border;
+    box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.35);
+
+    h5 {
+      font-size: 22px;
+      font-weight: 300;
+      color: @color-app;
+      margin-bottom: 25px;
+    }
+
+    label {
+      margin: 0;
+      font-weight: normal;
+    }
+
+    a#home-link,
+    a#contact-us {
+      color: @color-app;
+
+      &:hover {
+        color: darken(@color-app, 10%);
+      }
+    }
+  }
+
+  p {
+    font-size: 18px;
+    list-style: 28px;
+  }
+}
+
+.home-partners {
+  background: @color-grey-lighter;
+  padding: 115px 0 90px;
+
+  h3,
+  h5 {
+    text-align: center;
+    padding: 25px 0;
+    font-weight: 600;
+    color: @color-mid-grey;
+
+    span {
+      color: @color-black;
+    }
+  }
+
+  h3 {
+    font-size: 38px;
+  }
+
+  .register-block {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: @color-white;
+    border: 1px solid @color-register-border;
+    box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.35);
+
+    h5 {
+      font-size: 22px;
+      font-weight: 300;
+      color: @color-app;
+      margin-bottom: 25px;
+    }
+
+    label {
+      margin: 0;
+      font-weight: normal;
+    }
+
+    a#home-link,
+    a#contact-us {
+      color: @color-app;
+
+      &:hover {
+        color: darken(@color-app, 10%);
+      }
+    }
+  }
+
+  p {
+    font-size: 18px;
+    list-style: 28px;
+  }
+
+  .partner-box {
+    background: @color-white;
+    border-color: @color-black;
+  }
+
+  .partner-box img {
+    height: inherit;
+  }
+}
+
+.has-error {
+  background-color: @color-grey-lighter;
+  border-color: @color-red;
+}
+
+.text-link {
+  color: @color-app;
+  &:hover {
+    color: darken(@color-app, 10%);
+  }
+}
+
+.use-cases-text {
+  min-height: 100px;
+  text-align: left !important;
+}
+
+.box {
+  position: relative;
+  // padding: 3%;
+  overflow: hidden;
+}
+
+.ribbon {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 120px;
+  height: 120px;
+
+  span {
+    font-family: "Lato";
+    font-size: 16px;
+    color: @color-white;
+    text-align: center;
+    font-weight: bold;
+    line-height: 2;
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    width: 160px;
+    display: block;
+    background: @color-mid-grey;
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 25px;
+    right: -40px;
+  }
+}

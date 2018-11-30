@@ -1,0 +1,53 @@
+- const calleeName = "Callee"
+- const callerName = "Caller"
+
+.modal.fade.add-new-modal#callTranscriptions(tabindex="-1" role="dialog")
+  .modal.custom-modal.fade.in
+    .modal-dialog.custom-modal-dialog(role="document")
+      .modal-content.custom-modal-content.edit-sip.recordings.ng-cloak
+        .modal-header.custom-modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close" ng-click='setSelectedCall(null)')
+            span(aria-hidden="true") ×
+          h4.modal-title.custom-modal-title(id="callTranscriptions") Call Analytics - {{selectedCall.id}}
+
+        .modal-body.custom-modal-body
+          ul.nav.nav-tabs.participant-tabs(role="tablist")
+            li(role="presentation" ng-if="selectedCall.recordings.all.analytics.googleSpeech" ng-click="setActiveTab('googleSpeech')" ng-class="activeTab === 'googleSpeech' ? 'active' : 'inactive'")
+              a.service-tab Google Speech
+
+            li(role="presentation" ng-if="selectedCall.recordings.all.analytics.voiceBase" ng-click="setActiveTab('voiceBase')" ng-class="activeTab === 'voiceBase' ? 'active' : 'inactive'")
+              a.service-tab VoiceBase
+
+            li(role="presentation" ng-if="selectedCall.recordings.all.analytics.ibmWatson" ng-click="setActiveTab('ibmWatson')" ng-class="activeTab === 'ibmWatson' ? 'active' : 'inactive'")
+              a.service-tab IBM Watson
+
+          .tab-content
+            .tab-pane.active
+              .stats
+                .stat-title
+                  h5 Call Stats
+                .stat-call.incoming Caller Talk Time #[br]
+                  strong {{selectedCall.recordings.caller.analytics[activeTab].talkTimeAnalysis.talkTime * 100 | number:2}} %
+                .stat-call.outgoing Callee Talk Time #[br]
+                  strong {{selectedCall.recordings.callee.analytics[activeTab].talkTimeAnalysis.talkTime * 100 | number:2}} %
+                .stat-call.incoming Caller Overtalk #[br]
+                  strong {{selectedCall.recordings.caller.analytics[activeTab].talkTimeAnalysis.overTalk * 100 | number:2}} %
+                .stat-call.outgoing Callee Overtalk #[br]
+                  strong {{selectedCall.recordings.callee.analytics[activeTab].talkTimeAnalysis.overTalk * 100 | number:2}} %
+
+              .stats
+                .stat-title
+                  h5 Sentiment Analysis | #[span.caller Caller: {{getSaValue(activeTab, 'caller')}}] | #[span.callee Callee: {{getSaValue(activeTab, 'callee')}}]
+
+                .stat-graphs.text-center(ng-show="showGoogleCharts")
+                  .stat-sa(id="googleSentimentAnalysisLineChart_{{activeTab}}" data-caller="{{getSentimentAnalysisPerSentence(selectedCall.recordings.caller.analytics[activeTab].sentimentAnalysis.sentences)}}" data-callee="{{getSentimentAnalysisPerSentence(selectedCall.recordings.callee.analytics[activeTab].sentimentAnalysis.sentences)}}")
+
+              pre.speech-text
+                div(ng-repeat="sentence in getSelectedAggregation()")
+                  span.timestamp(class="{{sentence.participantType}}") {{sentence.humanStartTimestamp}}
+                    span(ng-show="sentence.sentimentAnalysisGlyphiconClass")  - Sentiment: {{ sentence.sentimentAnalysis }} #[i.glyphicon(ng-class="sentence.sentimentAnalysisGlyphiconClass")]
+                  p.transcript-sentence {{sentence.text}} #[br]
+
+
+        .modal-footer.custom-modal-footer
+          button.btn.btn-default-custom(data-dismiss="modal") Ok

@@ -1,0 +1,134 @@
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+	.navbar-inverse .navbar-nav>li>a {
+		font-size: 18px;
+	}
+}
+
+@media only screen and (max-width: 1200px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+	
+	.navbar-header {
+		float: right;	
+	}
+	
+	.navbar-right {			
+	  position: absolute;
+	  top: 95px;
+	  left: 0;
+	  float: none !important;
+		width: 100%;
+
+			
+		ul {
+			float: none;
+			background: rgba(64, 62, 57, .7);
+			margin: 0 !important;
+			
+			li {
+				display: block;
+				flex: none;
+				text-align: left;
+				border-bottom: 1px solid #080808;				
+			}
+		}
+	}
+
+  .faq-wrap .container {
+	  max-width: none;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width: 768px) {	
+  
+  .site-wrapper-inner {
+    align-items: flex-start;
+    padding-top: 110px; 
+  }
+  
+  .dropdown-menu {
+    background-color: white !important;
+  }
+  .banner-content h1 {
+    margin: 0;
+  }
+  #bridgeSettings {
+    .small-input {
+        width: 100%;
+    }
+    .input-group {
+        width: 100%;
+    }
+  }
+  #adminProfile, #participantProfile {
+    .form-group {
+      padding: 0;
+    }
+  }
+  .conference-url {
+    overflow: scroll;
+  }
+  .navbar-toggleable-sm .navbar-nav .nav-item {
+    border-top:1px solid rgba(255, 255, 255, 0.25);
+  }
+  
+  .home-setup .row .col-md-4{
+    margin-bottom: 30px;
+  }
+  
+  .home-register h3 span,
+  .home-setup h3 span {
+    display: block;
+    margin-top: 5px;
+  }
+   
+  .faq-wrap .faq-content .nav {
+	  display: none;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+	
+	.banner-content h1, 
+	.banner-ctc h1 {
+		margin: 0;	
+	}
+}
+
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 480px) {
+  
+  .input-group.add-sip {
+    display: block;
+    
+    label {
+      display: block;
+    }
+  }
+
+  .buttons-container {
+    
+    .btn {
+      font-size: 80%;
+    }
+    
+    .save-button {    
+      
+      #save-changes ,
+      #analytics-save {
+        max-width: none;
+        width: 100%;
+      }      
+    }
+  }
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 320px) {
+}

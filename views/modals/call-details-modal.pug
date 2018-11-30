@@ -1,0 +1,56 @@
+.modal.fade.add-new-modal#callDetails(tabindex="-1" role="dialog")
+  .modal.custom-modal.fade.in
+    .modal-dialog.custom-modal-dialog(role="document")
+      .modal-content.custom-modal-content.edit-sip.recordings.ng-cloak
+        .modal-header.custom-modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true" ng-click='setSelectedCall(null)') ×
+          h4.modal-title.custom-modal-title(id="callDetails") Call Details
+          hr
+          .call-identifiers
+            h5
+              strong Call ID: {{selectedCall.id}}
+            h6(ng-show="selectedCall.inboundCallId") Inbound Call ID: {{selectedCall.inboundCallId}}
+
+        .modal-body.custom-modal-body
+          .recordings-table(ng-show="selectedCall.recordings")
+            h3 Participant Recordings
+            table.table.table-bordered
+              thead
+                tr
+                  th
+                    i.glyphicon.glyphicon-resize-horizontal
+                    span Type
+                  th
+                    i.glyphicon.glyphicon-time
+                    span Started At
+                  th
+                    i.glyphicon.glyphicon-time
+                    span Ended At
+                  th
+                    i.glyphicon.glyphicon-floppy-disk
+                    span Format
+                  th.download-column
+                    span.glyphicon.glyphicon-download
+              tbody.ng-cloak
+                tr.recording.text-center.ng-cloak(ng-repeat="recording in selectedCall.recordings" ng-if="recording.participantDescription !== 'all'")
+                  td
+                    span {{recording.participantDescription}}
+                  td
+                    span {{recording.createdAt | date:'medium'}}
+                  td
+                    span {{recording.endedAt | date:'medium'}}
+                  td
+                    span {{ recording.format }}
+                  td
+                    .options-container(ng-show="recording.downloadLink")
+                      a.download-link.pull-left(ng-href="{{recording.downloadLink}}" title="Download recording")
+                        span.glyphicon.glyphicon-cloud-download
+
+                    .options-container.pull-right(ng-show="showControls(recording.downloadLink)")
+                      a.download-link(href="")
+                        span.icon.glyphicon.glyphicon-stop(ng-hide="demoAudio.paused" ng-click="togglePlay(recording.downloadLink)")
+                        span.icon.glyphicon.glyphicon-play(ng-show="demoAudio.paused" ng-click="togglePlay(recording.downloadLink)")
+
+        .modal-footer.custom-modal-footer
+          button.btn.btn-default-custom(data-dismiss="modal" ng-click='setSelectedCall(null)') Ok

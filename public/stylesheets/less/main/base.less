@@ -1,0 +1,64 @@
+html,
+body {
+  min-height: 100vh;
+  font-family: @primary-font;
+  font-size: @font-size;
+  font-weight: 400;
+  color: @color-black;
+  background: @color-grey-lighter;
+}
+
+.container {
+  width: 100%;
+}
+
+/*SAFARI GRID BRAKE FIX*/
+container:before,
+.container:after,
+.row:before,
+.row:after {
+  content: normal;
+}
+
+a {
+  color: @color-white;
+
+  &:hover {
+    color: @color-white;
+    text-decoration: underline;
+
+  }
+}
+
+.body-login {
+  max-width: 390px;
+  width: 100%;  
+}
+
+.site-wrapper {
+  background-color: @color-grey-lighter;
+}
+
+.site-wrapper-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 150px;
+  padding-bottom: 50px;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid #ccc;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+/* adding this to prevent showing hidden tags while requirejs does its work*/
+[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}
+

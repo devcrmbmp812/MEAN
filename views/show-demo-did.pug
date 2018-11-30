@@ -1,0 +1,40 @@
+extends layout
+
+append head
+  link(rel="stylesheet" href="/lib/country-select-js/build/css/countrySelect.min.css")
+  link(rel="stylesheet" href="/lib/flag-icon-css/css/flag-icon.min.css")
+  script.
+    require(
+      ['domReady', 'angular', 'bootstrap'],
+      function (domReady, angular) {
+        domReady(function () {
+          angular.module('voxconf-frontend', []);
+          angular.bootstrap(document, ['voxconf-frontend']);
+        });
+    });
+
+block content
+  body
+    .body
+      .site-wrapper-inner.home-wrap
+        .container
+          .row
+            .col-settings
+              .secondary-content.secondary-content-block.clearfix.ng-cloak
+
+                h3.underline Selected DID Number
+
+                .row
+                  .col-sm-12.col-md-6
+                    .cnt-select-container
+                      .cnt-picker
+                        .info-label-blue Your DID #:
+                          |&nbsp; #{currentUser.getFormattedDid()}
+                p.info-txt - Please #[a(target="_blank" href="mailto:workshop@voxbone.com?subject=voxbone.ai%20change%20numbers") contact us] for changes or additional numbers.
+                p.info-txt - Need more numbers or more countries #[a(target="_blank" href="https://www.voxbone.com/coverage/voip-coverage") (full list)]? #[a(target="_blank" href="mailto:workshop@voxbone.com?subject=voxrec.me") Contact Us]
+
+                .footer-actions
+                  a.next(onclick="location.href='/add-sip'")
+                    span
+                      |Add a SIP address
+                    i.fa.fa-arrow-right

@@ -1,0 +1,144 @@
+.faq-wrap {
+
+	.hero {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding-top: 80px;
+		height: 320px;
+	  background: url(../images/vox-ai-bg.jpg) no-repeat right center fixed;
+	  background-size: cover;
+
+	  h1 {
+	  	font-size: 100px;
+		  color: @color-white;
+	  }
+	}
+
+	.faq-content {
+	  height: 100%;
+	  padding: 20px 0 50px;
+	  display: -ms-flexbox;
+	  display: -webkit-box;
+	  display: -moz-box;
+	  display: -ms-box;
+	  display: box;
+	  color: @dark-bg-color;
+
+	  -ms-flex-direction: row;
+	  -webkit-box-orient: horizontal;
+	  -moz-box-orient: horizontal;
+	  -ms-box-orient: horizontal;
+	  box-orient: horizontal;
+
+		.nav {
+		  width: 320px;
+		  padding: 10px;
+			-ms-flex: 0 100px;
+			-webkit-box-flex:  0;
+			-moz-box-flex:  0;
+			-ms-box-flex:  0;
+			box-flex:  0;
+
+			> ol,
+			> ul {
+				background: @color-white;
+				margin: 0;
+				padding: 20px 20px 20px 40px;
+				list-style: none;
+				border-top: 2px solid @color-app;
+				counter-reset: li;
+
+				> li {
+					counter-increment: li;
+					padding: 5px 0 5px 8px;
+					position: relative;
+					font-weight: bold;
+
+					&:before {
+						position: absolute;
+						top: 5px;
+						right: 100%;
+						width: auto;
+						content: counter(li) ". ";
+						color: @color-app;
+						display: inline-block;
+						text-align: right;
+					}
+
+					a {
+						color: @color-black;
+
+						&:hover {
+							text-decoration: underline;
+							color: @color-app;
+						}
+					}
+				}
+			}
+		}
+
+		.main {
+			  padding: 10px;
+			 -ms-flex: 1;
+			 -webkit-box-flex: 1;
+			 -moz-box-flex: 1;
+			 -ms-box-flex: 1;
+			 box-flex: 1;
+
+			> ul {
+				counter-reset: li;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+
+				> li {
+					counter-increment: li;
+					padding: 20px 50px 20px 50px;
+					margin-bottom: 20px;
+					background: @color-white;
+
+					&:before {
+						display: block;
+						width: auto;
+						content: none;
+						color: @color-app;
+						text-align: center;
+						font-size: 22px;
+					}
+
+					h4 {
+						margin: 10px 0 15px;
+						font-size: 22px;
+						text-align: center;
+						line-height: 1.4;
+						font-weight: bold;
+
+						&:after {
+							display: block;
+							content: "";
+							width: 80px;
+							height: 2px;
+							margin: 15px auto;
+							background:  @color-app;
+						}
+					}
+
+					p {
+						font-size: 1em;
+						line-height: 1.2;
+
+						a {
+							color: @color-app;
+
+							&:hover {
+								color: @color-app;
+								text-decoration: underline;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

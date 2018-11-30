@@ -1,0 +1,4 @@
+if authenticated && currentUser.showCallButton()
+  .row
+    .voxButton(data-text="Call%20Now" data-did=`${currentUser.getSanitizedDid()}` data-incompatible_browser_configuration="hide_widget" data-server_url="https://www.voxbone.com/click2vox" data-use_default_button_css="false" data-div_css_class_name="hidden" data-basic_auth="true" data-voxbone_webrtc_username=`${process.env.VOXBONE_WEBRTC_USERNAME}` data-voxbone_webrtc_password=`${process.env.VOXBONE_WEBRTC_PASSWORD}` data-show_frame="false" data-show_branding="false" data-test_setup="false" data-placement="bottom-right" data-caller_id=`${currentUser.getFullName()}-voxbone-ai`)
+    script(async src="https://cdn.voxbone.com/click2vox/click2vox-3.min.js")

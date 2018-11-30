@@ -1,0 +1,130 @@
+extends layout
+
+append head
+  link(rel="stylesheet" href="/lib/flag-icon-css/css/flag-icon.min.css")
+  script.
+    require([
+      'angular',
+      'angular-moment',
+      'controllers/didssetup',
+      'click2vox',
+    ],
+    function (angular, angularMoment, DidSetupController) {
+      angular.module('voxbone-ai-frontend', ['angularMoment'])
+        .controller('DidSetupController', DidSetupController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block default_auth_nav
+  if currentUser.isDemoUser()
+    ul.nav.navbar-nav
+      li.nav-item
+        a.nav-item.nav-link(href="/") Home
+
+      li.nav-item
+        a.nav-item.nav-link(href="/?register=true") Try with your own DID
+
+block content
+  - const userData = JSON.stringify(currentUser)
+  - const isDemoUser = currentUser.isDemoUser()
+
+  .site-wrapper-inner.home-wrap
+    .container(ng-controller="DidSetupController" ng-init=`initData={account: ${userData}}`)
+      .row
+        .col-settings-12
+          .secondary-content.secondary-content-block.clearfix.ng-cloak
+            if !isDemoUser
+              .back-link
+                i.fa.fa-chevron-left
+                a(href="/analytic-settings") Back To Analytic Settings
+              .forward-link
+                a(href="/transcriptions") Go To Transcriptions
+                i.fa.fa-chevron-right
+            .row.underline
+              .col-xs-9
+                h3 DID setup
+              .col-xs-3
+                p.info-txt.pull-left
+                  a(href="mailto:workshop@voxbone.com?subject=Voxbone.ai bulk DID import&body=I am interested in Voxbone.ai bulk DID import" target="_blank") Contact us for help with bulk operations
+
+            .row
+              .col-md-4
+                .form-group.analytics-input
+                  label #[i.glyphicon.glyphicon-phone-alt] Enter a Number (E164) to configure
+                  input.calls-filter(type="text" class="form-control" ng-model="didToCheck" ng-change="changeDid()" ng-keyup="$event.keyCode === 13 && checkDid()")
+              .col-md-2
+                .pull-left
+                  a.btn.apply-filter(ng-click="checkDid()") {{ checkDidText || 'Check!'  }}
+              .col-md-4
+                .pull-left
+                  .alert-container.alert.text-center(class="alert-{{apiAlert.cssType}}" ng-show="apiAlert.message") {{apiAlert.message}}
+
+                  .alert-container.alert.text-center(class="alert-danger" ng-show="apiAlert.isContactMessage")
+                    span There is an issue with your Voice URI. Please #[a(href='mailto:labs@voxbone.com?subject=Voice URI issue&body=Please resolve my Voice URI issue.') contact us] to resolve this.
+
+            .row.recordings
+              .col-md-12
+                table.table.table-hover
+                  thead
+                    tr
+                      th
+                        i.glyphicon.glyphicon-phone-alt
+                        span e164
+
+                      th
+                        i.glyphicon.glyphicon-screenshot
+                        span Voice URI
+
+                      th
+                        i.glyphicon.glyphicon-flag
+                        span Language
+
+                      th
+                        i.glyphicon.glyphicon-info-sign
+                        span Enable Analytics
+
+                      th
+                        i.glyphicon.glyphicon-comment
+                        span Transcripts
+
+                  tbody.ng-cloak
+                    tr.recording.text-center.ng-cloak(ng-repeat="did in inventoryDids" ng-attr-id=`{{did.didId}}`)
+                      td
+                        a(href='tel:{{did.e164}}')
+                          | {{did.e164}}
+
+                      td
+                        span {{did.originalSipUri}}
+                        span.hidden {{did.analyticsSipUri}}
+
+                      td
+                        select.form-control.select-aaa(ng-model="did.language" ng-disabled="did.enabled")
+                          option(ng-repeat="language in languages" value="{{language.value}}") {{language.display}}
+
+                      td
+                        if currentUser.showAllowingTrafficWarning
+                          a.action(ng-href="#" ng-hide="did.enabled" ng-click="enableAnalytics(did)")
+                            i.glyphicon.glyphicon-play
+                            span  Enable
+                        else
+                          a.action(ng-href="#" ng-hide="did.enabled" ng-click="enableAnalyticsWarning(did)")
+                            i.glyphicon.glyphicon-play
+                            span  Enable
+
+                        a.action(ng-href="#" ng-show="did.enabled" ng-click="pauseAnalytics(did)")
+                          i.glyphicon.glyphicon-pause
+                          span  Disable
+
+                        a.action(ng-href="#" ng-click="removeAnalytics(did)")
+                          i.glyphicon.glyphicon-remove
+                          span  Remove
+
+                      td
+                        a.action(ng-href="/transcriptions?calledDid={{formatDid(did.e164)}}" target="_blank")
+                          i.glyphicon.glyphicon-comment
+                          span  Check!
+
+                .bottom-container
+
+      include modals/add-inventory-did-modal
+      include modals/enable-analytics-modal

@@ -1,0 +1,217 @@
+extends layout
+
+block call-did
+
+append head
+  link(rel="stylesheet" href="/lib/flag-icon-css/css/flag-icon.min.css")
+  link(rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css")
+  link(rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/simplePagination.min.css")
+
+  script.
+    require([
+      'angular',
+      'angular-moment',
+      'controllers/transcriptions',
+      'googlechart',
+      'click2vox',
+    ],
+    function (angular, angularMoment, TranscriptionsController) {
+      angular.module('voxbone-ai-frontend', ['angularMoment'])
+        .controller('TranscriptionsController', TranscriptionsController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block default_auth_nav
+  if currentUser.isDemoUser()
+    ul.nav.navbar-nav
+      li.nav-item
+        a.nav-item.nav-link(href="/") Home
+
+      li.nav-item
+        a.nav-item.nav-link(href="/?register=true") Try with your own DID
+
+block content
+  - const userData = JSON.stringify(currentUser)
+  - const isDemoUser = currentUser.isDemoUser()
+  - const showSentimentAnalysis = currentUser.isSentimentAnalysisEnabled()
+
+  if isPhone
+    include modals/desktop-preferred-modal
+
+  .site-wrapper-inner.home-wrap
+    .container(ng-controller="TranscriptionsController" ng-init=`initData={from: '${from}', initDateTime: '${initDateTime}', endDateTime: '${endDateTime}', calledDid: '${calledDid}', account: ${userData}}`)
+      .row
+        .col-settings-12
+          .secondary-content.secondary-content-block.clearfix.ng-cloak
+            if !isDemoUser
+              .back-link
+                i.fa.fa-chevron-left
+                a(href="/analytic-settings") Back To Analytic Settings
+              h3.underline Transcriptions
+            else
+              h3.underline Sample Calls
+
+              .container
+                .row.text-center
+                  .col-xs-6
+                    a(href="#" data-toggle="modal" data-target="#callDetails" ng-click="setSelectedCall('a94d984f-d50a-4d2a-8481-e518cbe84674')")
+                      img.img-responsive(src="//img.youtube.com/vi/3ddOaRj1D2Y/0.jpg")
+                      p Click to see the details and play the recording
+                    a(href="#" data-toggle="modal" data-target="#callTranscriptions" ng-click="setSelectedCall('a94d984f-d50a-4d2a-8481-e518cbe84674')")
+                      img.img-responsive(src="/images/sa_2.jpg")
+                      p Click to see the transcript and sentiment analysis
+                  .col-xs-6
+                    a(href="#" data-toggle="modal" data-target="#callDetails" ng-click="setSelectedCall('d815a899-1719-4ded-a36b-6e39cbb831e3')")
+                      img.img-responsive(src="//img.youtube.com/vi/sW-PHukzdgM/0.jpg")
+                      p Click to see the details and play the recording
+                    a(href="#" data-toggle="modal" data-target="#callTranscriptions" ng-click="setSelectedCall('d815a899-1719-4ded-a36b-6e39cbb831e3')")
+                      img.img-responsive(src="/images/sa_1.jpg")
+                      p Click to see the transcript and sentiment analysis
+
+              h3.underline Place your own test call
+
+            .row
+              .col-md-4
+                .form-group.analytics-input
+                  label Calls Range
+                  input.calls-filter(type="text" class="form-control" name="daterange")
+              .col-md-4
+                .form-group.analytics-input
+                  label Number Like (E164)
+                  input.calls-filter(type="text" class="form-control" ng-model="calledDid")
+              .col-md-4
+                .pull-right
+                  a.btn.apply-filter(ng-click="applyFilter()") Apply filter
+            hr
+
+            if showCallDemoDidButton
+              if dids
+                p.info-txt Calls to the number below will be automatically recorded and they will be run through your selected speech analytics partner after the call finishes
+
+                .voxButton#button(data-div_css_class_name="hidden" data-text="Call" data-did="undefined" data-caller_id="Voxbone.ai_webCaller" data-basic_auth="true" data-voxbone_webrtc_username=`${process.env.VOXBONE_WEBRTC_USERNAME}` data-voxbone_webrtc_password=`${process.env.VOXBONE_WEBRTC_PASSWORD}` data-send_digits="{{bridge.formattedDigits}}")
+
+                .container
+                  br
+                  .row.text-center
+                    .col-xs-6
+                      h5 Call from the PSTN
+                      if dids.length === 1
+                        .info-label-blue.large
+                          span #{dids[0]}
+                      else
+                        .container
+                          .rows
+                            each did in dids
+                              .col-xs-6
+                                a(href=`tel:${did}`)
+                                  .info-label-blue
+                                    - let country = did.substr(1, 2)
+                                    case country
+                                      when "14"
+                                        .flag-icon(class=`flag-icon-us`)
+                                      when "54"
+                                        .flag-icon(class=`flag-icon-ar`)
+                                      when "49"
+                                        .flag-icon(class=`flag-icon-de`)
+                                      when "32"
+                                        .flag-icon(class=`flag-icon-be`)
+                                    span &nbsp;#{did}
+
+                    .col-xs-6
+                      h5 Web calling
+                      .info-label-blue.large
+                        a(ng-click=`callDID('${dids[0]}')` ng-show="isWebRTCSupported")
+                          span Join from your browser
+              else
+                .info-label-red.large
+                  span You must select a DID to place a call and test speech recognition
+                  br
+                  a.btn(onclick="location.href='/add-sip'") Select a DID
+
+            if !isPhone
+              .row.recordings
+                .col-md-12
+                  table.table.table-hover
+                    thead
+                      tr
+                        th
+                          a(style="text-decoration: none;" href="#" data-toggle="tooltip" data-placement="top" data-delay='{"show":"500"}' title="In order to get the called DID information, DNIS feature needs to be enabled on the DID. You can visit our portal (https://www.voxbone.com/portal/configuration/configure-numbers), go to Configure DIDs and select 'enabled' in Service tab. Feel free to contact us via labs@voxbone.com if you have any questions")
+                          i.glyphicon.glyphicon-phone
+                          span Called Number
+                          span.badge(data-toggle="tooltip" data-placement="right" data-delay='{"show":"500"}' title="In order to get the called DID information, DNIS feature needs to be enabled on the DID. You can visit our portal (https://www.voxbone.com/portal/configuration/configure-numbers), go to Configure DIDs and select 'enabled' in Service tab. Feel free to contact us via labs@voxbone.com if you have any questions") ?
+
+                        th
+                          i.glyphicon.glyphicon-time
+                          span Started At
+
+                        th.hidden
+                          i.glyphicon.glyphicon-time
+                          span Ended At
+
+                        th
+                          i.glyphicon.glyphicon-hourglass
+                          span Duration
+
+                        th
+                          i.glyphicon.glyphicon-link
+                          span Connected SIP URI
+
+                        th
+                          i.glyphicon.glyphicon-info-sign
+                          span Call Info
+
+                        th
+                          i.glyphicon.glyphicon-list-alt
+                          span Analytics
+
+                        th
+                          a(style="text-decoration: none;" href="#" data-toggle="tooltip" data-placement="top" title="This is the average of the caller and callee sentiment analysis scores")
+                            i.glyphicon.glyphicon-comment
+                            span Sentiment
+
+                        th
+                          i.glyphicon.glyphicon-eye-open
+                          span Raw
+
+                    tbody.ng-cloak
+                      tr.recording.text-center.ng-cloak(ng-class="getSelectedCallId() === call.id ? 'row-highlight' : ''" ng-repeat="call in calls" ng-attr-id=`{{call.id}}`)
+                        td
+                          span(ng-show="call.calledNumber") {{call.calledNumber}}
+                          span.badge(ng-hide="call.calledNumber" data-toggle="tooltip" data-placement="right" data-delay='{"show":"500"}' title="In order to get the called DID information, DNIS feature needs to be enabled on the DID. You can visit our portal (https://www.voxbone.com/portal/configuration/configure-numbers), go to Configure DIDs and select 'enabled' in Service tab. Feel free to contact us via labs@voxbone.com if you have any questions") ?
+
+                        td
+                          span {{call.startTime | date:'medium'}}
+                        td.hidden
+                          span {{call.endTime | date:'medium'}}
+                        td
+                          span {{secondsToMinutesAndSeconds(call.duration)}}
+                        td
+                          span {{call.requestUri || '-'}}
+                        td
+                          a(href="#" data-toggle="modal" data-target="#callDetails" ng-click="setSelectedCall(call.id)")
+                            span.i.glyphicon.glyphicon-info-sign
+                        td
+                          a(href="#" data-toggle="modal" data-target="#callTranscriptions" ng-click="setSelectedCall(call.id)")
+                            span.i.glyphicon.glyphicon-list-alt(ng-show='displayAnalytics(call)')
+                          i.glyphicon.glyphicon-refresh.gly-spin(ng-hide='displayAnalytics(call)')
+
+                        td
+                          span.hidden {{ call.sentimentAnalysis }}
+                          span(data-toggle="modal" data-target="#callTranscriptions" ng-click="setSelectedCall(call.id)")
+                            a(href="#" data-toggle="tooltip" data-placement="top" title="This is the average of the caller and callee sentiment analysis scores {{ call.sentimentAnalysis }}")
+                              span.i.glyphicon(ng-class="getCallSentimentAnalysisResult(call.sentimentAnalysis)")
+
+                        td
+                          a(data-toggle="modal" ng-href="/metadataApi/call/{{call.id}}" target="_blank")
+                            i.glyphicon.glyphicon-save-file
+
+
+                  .bottom-container
+                    .text-center
+                      .pagination-holder.black.clearfix
+
+                    a.btn.download-csv(href="/metadataApi/getSpreadsheet") Download CSV
+
+      include modals/call-details-modal
+      include modals/transcriptions-modal
+      include modals/warning-transcriptions-modal

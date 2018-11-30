@@ -1,0 +1,101 @@
+doctype html
+html(lang='en')
+  block head
+    if process.env.NEW_RELIC_LICENSE_KEY
+      != newrelic.getBrowserTimingHeader()
+
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(content="The Workshop by Voxbone - Voxbone.ai" name="keywords")
+    meta(name='description', content="Speech analytics is booming. An ever-growing number of companies are using it to gain actionable intelligence into their customer interactions. The accuracy of your data depends on the quality of your call recordings. The latest service out of the Workshop guarantees high-quality recordings and has been built specifically for Speech Analytics needs. Even better, high-quality recordings with VoxRec are free to all Voxbone customers. You don't require any new equipment and it can be easily integrated into your legacy system!")
+    meta(property='og:description', content="Speech analytics is booming. An ever-growing number of companies are using it to gain actionable intelligence into their customer interactions. The accuracy of your data depends on the quality of your call recordings. The latest service out of the Workshop guarantees high-quality recordings and has been built specifically for Speech Analytics needs. Even better, high-quality recordings with VoxRec are free to all Voxbone customers. You don't require any new equipment and it can be easily integrated into your legacy system!")
+    meta(property='og:title', content='Recording for speech analytics')
+    meta(property='og:url', content='https://voxbone.ai/')
+    meta(property='og:image', content='https://voxbone.ai/images/vox-ai-bg.jpg')
+    meta(property='og:site_name', content='Voxbone.AI - A Workshop Project')
+    meta(property='og:type', content='website')
+    title The Workshop by Voxbone - voxbone.ai
+
+    link(rel="shortcut icon" type="image/x-icon" href=process.env.FAVICON_CDN_URL)
+
+    link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet")
+    link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" id="font-awesome-css" media="screen" rel="stylesheet" type="text/css")
+    link(href="/stylesheets/root.css", rel="stylesheet")
+    link(href="//cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.css", rel="stylesheet")
+
+    script(src="/lib/requirejs/require.js")
+    script(src="/config.js")
+
+    include tracking-scripts/google
+    include tracking-scripts/hotjar
+
+  body
+    block call-did
+      include call-did-snippet
+    .site-wrapper
+      block navbar
+        nav.navbar.navbar-inverse.navbar-fixed-top
+          .container
+            //- Brand and toggle get grouped for better mobile display
+            .pull-left.page-title
+              a(href="/" alt="logo") SPEECH #[span ANALYTICS]
+
+            .navbar-header
+              button(class="navbar-toggler pull-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#bd-main-nav" aria-controls="bd-main-nav" aria-expanded="false" aria-label="Toggle navigation") ☰
+            .collapse.navbar-toggleable-md.navbar-right(id="bd-main-nav")
+
+              ul.nav.navbar-nav
+
+                if authenticated
+                  block default_auth_nav
+
+                  if !currentUser.isDemoUser()
+                    li.nav-item
+                      a.nav-link(target="_blank" href="//docs.voxbone.ai") Docs
+
+                    li
+                      .nav-item.dropdown
+                      a.nav-link.dropdown-toggle#navbarDropdownMenuLink1(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Try a Demo
+                      .dropdown-menu(aria-labelledby="navbarDropdownMenuLink1")
+                        a.dropdown-item(href="/show-demo-did") Select Demo DID
+
+                        if currentUser.isVoxboneCustomer()
+                          a.dropdown-item(href="/dids-setup") Add Voxbone DID
+                        a.dropdown-item(href="/add-sip") Add SIP
+
+                        if currentUser.isVoxboneCustomer() || currentUser.enableTransferSettings
+                          a.dropdown-item(href="/transfer-settings") Transfer Settings
+                        a.dropdown-item(href="/analytic-settings") Speech Analytics Settings
+
+                        if currentUser.inventoryDids.length > 0
+                          a.dropdown-item(href="/transcriptions") Transcriptions
+                        else
+                          a.dropdown-item(href="/transcriptions?demo=true") Transcriptions
+
+                        block call-did
+                          if currentUser.showCallButton()
+                            a.dropdown-item(href='#' onClick="document.getElementById('launch_call').click()") Call your DID #{currentUser.getFormattedDid()}
+                    li.nav-item
+                      a.nav-link(href="/account/edit") Profile
+                    li.nav-item
+                      a.nav-link(href="/account/logout") Logout
+                else
+                  block unauthenticated-navbar
+                    if isHomePage
+                      li.nav-item
+                        a.nav-link(href="/faq") Learn More
+                    else
+                      li.nav-item
+                        a.nav-link(href="/") Home
+                    li.nav-item
+                      if isHomePage
+                        a.scroll.nav-link(href="#register") Login / Register
+                      else
+                        a.nav-link(href="/#register") Login / Register
+
+      block content
+
+      block footer
+        .footer.small-footer
+          include footer

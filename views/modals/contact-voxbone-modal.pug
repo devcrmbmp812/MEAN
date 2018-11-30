@@ -1,0 +1,15 @@
+.modal.fade.add-new-modal#contactUs(tabindex="-1" role="dialog")
+  .modal.custom-modal.fade.in
+    .modal-dialog.custom-modal-dialog(role="document")
+      .modal-content.custom-modal-content.edit-sip
+        .modal-header.custom-modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true") ×
+          h4.modal-title.custom-modal-title(id="contactUs") Contact Us
+        .modal-body.custom-modal-body
+          p #[strong More questions?]
+          p Please contact us using one of the buttons below.
+        .modal-footer.custom-modal-footer
+          button.btn.btn-default-custom(type="button" id="callVoxbone" onClick="document.getElementById('launch_call').click()") Click to Call Us
+          a(target="_blank" href="mailto:workshop@voxbone.com?subject=Voxbone.ai")
+            button.btn.btn-default-custom(type="button") Click to Email Us

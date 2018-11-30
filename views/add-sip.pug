@@ -1,0 +1,74 @@
+extends layout
+
+append head
+
+  script.
+    require([
+      'angular',
+      'controllers/addSIP'
+    ],
+    function (angular, AddSIPController) {
+      angular.module('voxbone-ai-frontend', [])
+        .controller('AddSIPController', AddSIPController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block content
+  .site-wrapper-inner.home-wrap
+    .container(ng-controller='AddSIPController' ng-init="init()")
+      .row
+        .col-settings
+          .secondary-content.secondary-content-block.sip-diagram.clearfix
+            img(src="/images/sip-diagram.png")
+
+          .secondary-content.secondary-content-block.clearfix.ng-cloak
+            h3.underline Add a SIP address
+            p.info-txt - Your selected DID will automatically connect to the SIP address below.
+            p.info-txt - You can enter your own SIP URI or use our demo speech analytics IVR.
+
+            form.add-sip-form(name="sip_form")
+              label SIP URI
+                span.badge.round(data-toggle='tooltip' data-placement="right" title="Add a SIP URI to connect to your switch or endpoint here") ?
+
+              .input-group.flex-dropdown
+                input.form-control(type="text" name="remoteSipUri" ng-model="profile.remoteSipUri" ng-pattern="/^[^@]+@[^@]+$/" check-allowed-sip auto-focus required placeholder= "Your SIP URI")
+                .input-group-btn
+                  button.btn.btn-default.dropdown-toggle.own-sip(type="button" data-toggle="dropdown")
+                    |Use ours
+                  ul.dropdown-menu.pull-right
+                    if defaultSip
+                      li
+                        a(href="#" ng-click=`updateSIPURI('${defaultSip}')`)
+                          em #{defaultSip}
+                          span  - our IVR
+                    if sentimentAnalysisSip
+                      li
+                        a(href="#" ng-click=`updateSIPURI('${sentimentAnalysisSip}')`)
+                          em #{sentimentAnalysisSip}
+                          span  - our Sentiment Analysis IVR
+
+            .success-label
+              .ng-cloak(ng-show="onSubmitting") {{successMessage}}
+
+            .error-label
+              .ng-cloak(ng-show="sip_form.profile.$error.notallowed") SIP URI not allowed
+              .ng-cloak(ng-show="errorMessage") {{errorMessage}}
+
+            .save-button.inner(ng-show="saveIsVisible")
+              button.btn#save-changes(ng-disabled="sip_form.$invalid || onSubmitting" ng-click="saveSipURI(sip_form)" data-loading-text="Provisioning..." name="submitBtn") {{getSubmitText()}}
+            a.pull-right(ng-show="profile.remoteSipUri" href="#" ng-click="removeSipUri()") Remove Sip URI
+
+            p.info-txt
+              a(href="#" data-toggle="modal" data-target="#configureHelp") How do I configure my NAT/Firewall?
+
+            .footer-actions
+              a.back(onclick="location.href='/landing'")
+                i.fa.fa-arrow-left
+                span
+                  |DID Selection
+              a.next(onclick="location.href='/analytic-settings'")
+                span
+                  |Analytics Settings
+                i.fa.fa-arrow-right
+
+  include modals/nat-firewall-help-modal

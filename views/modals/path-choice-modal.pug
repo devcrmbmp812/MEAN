@@ -1,0 +1,35 @@
+.modal.fade.path-choice#pathChoice(tabindex="-1" role="dialog")
+  .modal.custom-modal.fade.in
+    .modal-dialog.custom-modal-dialog(role="document")
+      .modal-content.custom-modal-content.edit-sip.text-center
+        .modal-header.custom-modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true") ×
+          h4.modal-title.custom-modal-title(id="myModalLabel") Which DIDs do you want to use?
+        .modal-body.custom-modal-body
+          p Would you like to connect your Voxbone Portal account to add recording and speech analytics to your own DIDs?
+
+          .container
+            .row
+              .col-xs-6
+                if currentUser.api_username && currentUser.api_password
+                  a(href="/dids-setup")
+                    button.btn.btn-default-custom Use my Voxbone DIDs
+                else
+                  a(data-dismiss="modal")
+                    button.btn.btn-default-custom Use my Voxbone DIDs
+
+              .col-xs-6
+                a(href="/show-demo-did")
+                  button.btn.btn-default-custom Use a test DID
+
+        .modal-body.custom-modal-body
+          lu
+            li By linking your account, you can easily enable analytics on your DIDs.
+            li The calls will get connected to the same destination.
+            li Make sure you enabled traffic from #[a.text-link(href="/" target="_blank") Voxbone analytics platform IPs] before enabling.
+
+        .modal-footer.custom-modal-footer
+          a(data-dismiss="modal")
+            p You can always connect your Voxbone account from the Profile Menu
+          button.btn.btn-default-custom(data-dismiss="modal") Dismiss

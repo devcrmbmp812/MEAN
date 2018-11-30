@@ -1,0 +1,161 @@
+.recordings {
+  margin-top: 30px;
+  .download-link {
+    color: black;
+    display: none;
+  }
+
+  .download-column {
+    width: 30px;
+  }
+
+  .call-identifiers {
+    background-color: @color-app;
+    padding: 5px 0 5px 10px;
+    color: @color-white;
+  }
+
+  .timestamp {
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  .download-csv {
+    position: absolute;
+    right: 20px;
+    top: -5px;
+  }
+
+  .bottom-container {
+    position: relative;
+  }
+
+  .caller {
+    color: @color-app;
+  }
+
+  .callee {
+    color: #60b3de;
+  }
+
+  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: @light-blue-transparent;
+  }
+
+  .row-highlight {
+    background-color: @light-blue-transparent;
+  }
+
+  .service-tab {
+    cursor: pointer;
+    cursor: hand;
+  }
+
+  .highlight {
+    background-color: yellow;
+  }
+
+  .transcript-sentence:first-letter {
+    text-transform: capitalize;
+  }
+
+  .transcript-sentence {
+    border-bottom: 1px solid #EAEAEA;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+  }
+
+  .download-link[href] {
+    color: black;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .table>thead>tr>th, .table>tbody>tr>td {
+    text-align: center;
+    vertical-align: middle;
+
+    i {
+      display: block;
+      text-align: center;
+      padding: 2px 0;
+      margin-right: 5px;
+    }
+  }
+
+  .action {
+    padding: 5px;
+    display: inline-block;
+  }
+}
+
+.stats {
+  margin: 20px 0;
+  width: 100%;
+  .stat-call {
+    background-color: @color-grey-lighter;
+    width: 25%;
+    display: inline-block;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    text-align: center;
+  }
+  .stat-sa {
+    display: inline-block;
+  }
+  .stat-title {
+  }
+}
+
+.did-box {
+  background: @nav-color;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.tel {
+  cursor: pointer;
+  cursor: hand;
+  font-size: 30px;
+}
+
+.tel:hover {
+  text-decoration: underline !important;
+}
+
+.speech-text {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  word-break: normal !important;
+  padding: 20px !important;
+}
+
+.service-tab {
+  color: #555;
+}
+
+.service-tab:hover {
+  color: #555;
+}
+
+.apply-filter {
+  margin-top: 23px;
+  background-color: rgba(237, 28, 36, 0.6) !important;
+}
+
+.add-did {
+  margin-top: 23px;
+  background-color: rgba(65, 205, 140, 0.6) !important;
+}
+
+.calls-filter {
+  background-color: rgba(237, 28, 36, 0.6);
+  color: white;
+}
+
+.btn-success {
+  background-color: rgba(237, 28, 36, 0.6) !important;
+}

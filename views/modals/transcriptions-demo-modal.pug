@@ -1,0 +1,23 @@
+.modal.fade.add-new-modal#demoTranscriptions(tabindex="-1" role="dialog")
+  .modal.custom-modal.fade.in
+    .modal-dialog.custom-modal-dialog(role="document")
+      .modal-content.custom-modal-content.edit-sip.recordings.ng-cloak
+        .modal-header.custom-modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true") ×
+          h4.modal-title.custom-modal-title(id="demoTranscriptions") Sentiment Analysis Demo
+
+        .modal-body.custom-modal-body.text-center
+          br
+          h5 We are taking you to our Sentiment Analysis demo
+          br
+          if authenticated && !currentUser.isDemoUser()
+            p To see sentiment analysis on calls made with your own Voxbone.AI DID, please click #[a.custom-modal-link(href="/transcriptions") here]
+            br
+
+        .modal-footer.custom-modal-footer
+          a(href="/login-demo")
+            button.btn.btn-default-custom Go to Demo
+          //- a(href="https://cloud.google.com/natural-language/" target="_blank")
+            button.btn.btn-default-custom Learn more
+          //- button.btn.btn-default-custom(data-dismiss="modal") Close

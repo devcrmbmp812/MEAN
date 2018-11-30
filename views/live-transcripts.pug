@@ -1,0 +1,126 @@
+extends layout
+
+block call-did
+
+block navbar
+
+block footer
+
+append head
+  link(rel="stylesheet" href="/lib/flag-icon-css/css/flag-icon.min.css")
+  script.
+    require([
+      'angular',
+      'angular-moment',
+      'controllers/liveTranscripts',
+      'click2vox'
+    ],
+    function (angular, angularMoment, LiveTranscriptsController) {
+      angular.module('voxbone-ai-frontend', ['angularMoment'])
+        .controller('LiveTranscriptsController', LiveTranscriptsController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block content
+  - var bridgeid = JSON.stringify(bridgeId)
+  .site-wrapper(ng-controller="LiveTranscriptsController" ng-init=`initData={bridgeId: ${bridgeid}, guestName: "${guestName}"}`)
+    .voxButton#button(data-div_css_class_name="hidden" data-text="Call" data-did="undefined" data-caller_id="{{callerId || guestName}}" data-basic_auth="true" data-voxbone_webrtc_username=`${process.env.VOXBONE_WEBRTC_USERNAME}` data-voxbone_webrtc_password=`${process.env.VOXBONE_WEBRTC_PASSWORD}` data-send_digits="{{bridge.formattedDigits}}" data-draggable="true")
+    #enter-modal.enter-modal.ng-cloak
+      .em-block
+        form
+          h2 Welcome to Voxbone’s Live Transcription Demo
+          p Please enter your name to join
+          .form-group
+            input.form-control(type="text" ng-model="callerId" placeholder=`${guestName}`)
+            button#join-now.btn(type="submit") Save
+
+        p.disclaimer-msg This call won't be recorded in any means. The transcriptions will be automatically deleted when your call finishes.
+
+    .live-transcripts-main.ng-cloak
+      .transcripts-sidebar
+        .tsb-header
+          .room-name
+            span Welcome {{callerId || guestName}}
+
+          span.room-count
+            i.fa.fa-users(aria-hidden="true")
+            | &nbsp; {{participants.length || '0'}} participants
+
+          a.menu-toggle(ng-click="toggleMenu()")
+            i.fa.fa-bars(aria-hidden="true")
+
+        ul.tsb-options
+          li
+            a#hide-callers(href="#")
+              i.fa.fa-desktop(aria-hidden="true")
+              span(ng-click=`callDID('${dids[0].did_number}')`) Join from your browser
+
+          li.tsb-extras-outer
+            if dids.length > 0
+              a(href="#" ng-click="toggleDidsList()")
+                i.fa.fa-phone-square(aria-hidden="true")
+                span Call from the PSTN
+              .tsb-extras
+                .tsb-extras-inner
+                  include includes/dids-listing
+          li
+            a#hide-callers(href="#" ng-click="showCallerInfo = !showCallerInfo")
+              i.fa.fa-users(aria-hidden="true")
+              span(ng-show="showCallerInfo") Hide Caller Info
+              span(ng-hide="showCallerInfo") Show Caller Info
+
+        .tsb-footer
+          a(href="/")
+            i.fa.fa-sign-out
+            || Exit Conference
+
+      .transcripts-body
+        .tb-block
+          .tb-block-inner.bg-light
+            .tb-block-header
+              i.fa.fa-file-text-o(aria-hidden="true")
+              span Live Transcription
+
+            .tb-block-scroll.tb-block-transcription#transcription
+              span(ng-repeat="event in conference") #[strong(ng-style="{'color': event.color}") {{event.participant}} {{event.timestamp ? '- ' + event.timestamp + ': ' : ': ' }}{{event.transcript}}] #[br]
+
+        #caller-block.tb-block.tb-block-short(ng-show="showCallerInfo")
+          .tb-block-inner.bg-dark
+            .tb-block-header
+              i.fa.fa-users(aria-hidden="true")
+              span Caller Info
+
+            .tb-block-scroll
+              .table-responsive
+                table.table.table-bordered
+                  thead
+                    tr
+                      th
+                        span {{ 'Caller ID ' }}
+                        span.glyphicon.glyphicon-user
+
+                      th
+                        span {{ 'Location ' }}
+                        span.glyphicon.glyphicon-globe
+
+                      th
+                        span {{ 'Country ' }}
+                        span.glyphicon.glyphicon-flag
+
+                      th
+                        span {{ 'Carrier ' }}
+                        span.glyphicon.glyphicon-cloud
+
+                      th Dialed #
+
+                      th
+                        span {{ 'Entry Time ' }}
+                        span.glyphicon.glyphicon-time
+
+                      th
+                        span {{ 'Forwarding '}}
+                        span.glyphicon.glyphicon-circle-arrow-right
+
+                  tbody.ng-cloak
+                    tr.text-center.ng-cloak(ng-repeat="part in participants")
+                      include includes/listed-participants-info

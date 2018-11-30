@@ -1,0 +1,168 @@
+extends layout
+
+block call-did
+
+block default_auth_nav
+  ul.nav.navbar-nav
+    li.nav-item
+      a.nav-link(href="#" data-toggle="modal" data-target="#contactUs") Contact Us
+
+prepend unauthenticated-navbar
+  ul.nav.navbar-nav
+    li.nav-item
+      a.nav-link(href="#" data-toggle="modal" data-target="#contactUs") Contact Us
+
+append head
+
+  script.
+    require([
+      'angular',
+      'controllers/faq'
+    ],
+    function (angular, FaqController) {
+      angular.module('voxbone-ai-frontend', [])
+        .controller('FaqController', FaqController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block content
+  .faq-wrap
+    .hero
+      h1 FAQ
+
+    .body(ng-controller='FaqController')
+      .container
+        .faq-content.ng-cloak
+          .nav
+            ul
+              li
+                a(href="#1")
+                  | What is speech analytics?
+              li
+                a(href="#2")
+                  | Why would I need it?
+              li
+                a(href="#3")
+                  | Does Voxbone provide speech analytics?
+              li
+                a(href="#4")
+                  | I already have a recording, why would I need VoxRec?
+              li
+                a(href="#5")
+                  | Would my company need to replace equipment for better recording quality?
+              li
+                a(href="#6")
+                  | How does it all work?
+              li
+                a(href="#7")
+                  | If you do the recording, how will my calls will be delivered to speech analytics?
+              li
+                a(href="#8")
+                  | So you record through the cloud, what about data safety and confidentiality?
+              li
+                a(href="#9")
+                  | How can I set up recording and speech analytics?
+              li
+                a(href="#10")
+                  | How long does it take to set up recording and speech analytics?
+              li
+                a(href="#11")
+                  | But what if our infrastructure is complex and has unique needs
+              li
+                a(href="#12")
+                  | What costs should I expect?
+              li
+                a(href="#13")
+                  | Sounds good, how should I “sell” this solution internally?
+              li
+                a(href="#14")
+                  | This looks interesting, how can we test it and proceed further?
+              li
+                a(href="#15")
+                  | I didn’t find the answer on the question that bothers me.
+
+
+          .main
+            ul
+              li#1
+                h4 What is speech analytics?
+                p Speech analytics allows you analyze recorded calls through special speech recognition software to gather useful customer information in a simple automated way.
+                p Organizations can leverage speech analytics to review key call metrics and even detect emotions in a speaker’s voice. By using this data, enterprises can more quickly analyze customer needs and optimize the performance of their call center agents.
+
+              li#2
+                h4 Why would I need it?
+                p Speech analytics is booming. More and more companies start using it to monitor and coach call center agents, optimize call center scripts, identify phrases that do not go over well with customers so they can be avoided and even grasp a contextual understanding of the emotion and sentiment inherent in customer calls.
+                p While contact center supervisors are not able to analyze each call, speech analytics can do it quickly and effectively. Accurate automated reports will provide you with a full picture of customer behavior, agent mistakes, successful phrases and typical issues in order to help you improve agent performance, grow sales, and increase the ROI of your customer center.
+
+              li#3
+                h4 Does Voxbone provide speech analytics?
+                p No, Voxbone offers a better solution. Speech analytics software needs high-quality recording in order to provide most accurate data. Voxbone offers the VoxRec cloud-based service that is specifically designed to provide high-quality recording of contact center calls. Together with recording, we offer plug-ins to leading speech analytics applications that are integrated into our SIP trunking and DID services.
+
+              li#4
+                h4 I already have a recording, why would I need VoxRec?
+                p Legacy recorders are typically optimized for long-term storage and degrade speech quality to save space. They cannot offer the recording quality needed for accurate speech recognition.
+                p Vendors of legacy recording solutions also often require additional licensing and configuration to send data to external services, and the integration required can be extremely expensive. In addition, the voice quality can be seriously degraded by internal systems before the files are even sent to a speech analytics company.
+                p In contrast, Voxbone offers a single, logical recording cloud, and VoxRec allows you to avoid the limitations of legacy recording services. VoxRec can be layered on top of recording services already in place so you can cost-effectively add high-quality recording and speech analytics to enterprise or call center environments.
+
+              li#5
+                h4 Would my company need to replace equipment #[br] for better recording quality?
+                p No! This is the best part – with VoxRec there is no need to replace any legacy equipment or invest in new network infrastructure. It implements cloud overlay recording, allowing you to just switch your SIP trunking provider to Voxbone and implement high-quality recording without even touching your existing call recording infrastructure. Voxbone can then record the calls and send them to your selected speech analytics provider.
+
+              li#6
+                h4 How does it all work?
+                p It is simple. We record the calls and route them to leading speech analytics companies. Everything is synchronized through Voxbone’s APIs that integrate with the infrastructure of speech analytics vendors. Depending on the speech analytics vendor’s capabilities, we can even deliver redacted audio files that anonymize callers and remove personally identifiable information for long-term PCI/HIPPA-complaint storage. Voxbone can also fork calls for real-time speech analytics applications where the call is processed in real time.
+
+              li#7
+                h4 If you do the recording, how will my calls will be delivered #[br] to speech analytics?
+                p We will take care of that. Among the possible variations there are three primary architectures:
+                ol
+                  li
+                    p Recordings are made from Voxbone SIP trunks and directly transferred to the speech analytics partner.
+                  li
+                    p Calls are sent to our cloud recorder from your network and directly transferred to the speech analytics partner.
+                  li
+                    p Calls are forked from Voxbone’s network and sent to a real-time speech analytics partner.
+
+              li#8
+                h4 So you record through the cloud, what about #[br] data safety and confidentiality?
+                p Cloud technology actually enhances data safety and confidentiality over premises-based solutions. VoxRec was designed for cloud-based deployments and leverages modern technologies to be safe and absolutely reliable. Sensitive traffic can be encrypted, and call centers have the flexibility to tune VoxRec to ensure enterprise data safety rules and policies.
+                p With VoxRec, an enterprise can even optimize the routes of the recording traffic to comply with local regulations. For example, a customer that is required to adhere with European compliance regulations can route and store all recordings in-country.
+
+              li#9
+                h4 How can I set up recording and speech analytics?
+                p If you already have a speech analytics solution in place, Voxbone will work with your vendor to integrate VoxRec with their application. In other case, we’ll review your needs and recommend vendors we work closely with that meet your criteria. Either way, we can port your SIP trunks if needed, and you’ll only have to change a couple of IP addresses to switch SIP trunking to Voxbone. If porting SIP trunks or DIDs is not currently an option for you, no worries, you can forward us the calls via the Session Recording Protocol (SIPREC) or other means. Contact us and we’ll take care of the rest.
+
+              li#10
+                h4 How long does it take to set up recording and #[br] speech analytics?
+                p In most cases Voxbone can set up recording and speech analytics within a few of days, depending on your system requirements. We have proven best practices for provisioning already in place to launch the service as fast you need it. Since we already work with most leading speech analytics vendors, it is relatively simple and fast to deploy VoxRec and speech analytics of your choice.
+
+              li#11
+                h4 But what if our infrastructure is complex #[br] and has unique needs
+                p Every enterprise IT and call center environment is different, and if you port your SIP trunks to Voxbone you can totally avoid most of the complexity and nuances of your call center and network environment. But if your organization has technology issues or IT policies that prevent you from porting your trunks to Voxbone, our engineers will design the optimum solution for your environments.
+
+              li#12
+                h4 What costs should I expect?
+                p In a typical greenfield implementation, there are 3 primary cost components:
+                ol
+                  li
+                    p Voxbone DID and trunk capacity – per phone number and per channel per month.
+                  li
+                    p Data transfer fees – we charge per Gigabyte of data transferred.
+                  li
+                    p Speech analytics fees, which are often priced on a per-minute basis.
+
+                p Existing Voxbone customers would have no additional DID or capacity charges! We offer standard pricing for SIP trunks, and you can contact us to quote a total price for your implementation. We also offer recording pricing options based on the number of GB of files transferred.
+
+              li#13
+                h4 Sounds good, how should I “sell” this solution internally?
+                p The ROI on speech analytics is extremely compelling. For example, in a call center scenario if speech analytics delivers even a 5% increase in sales this return will more than pay for the cost of implementing this solution. In addition to the hard-dollar returns, your organizations will also realize major improvements in call center quality and efficiency. If you port your SIP trunks to Voxbone you’ll have an even greater ROI because you’ll be able to avoid the onsite technical complexity that comes with SBCs on your network and implement recording and speech analytics without the cost of overcoming traditional roadblocks.
+
+              li#14
+                h4 This looks interesting, how can we test it #[br] and proceed further?
+                p Contact our Product Manager #[a(target="_blank" href="mailto:workshop@voxbone.com?Subject=voxbone.ai%20speech%20analytics") Fikri Firat] to start conversation on your requirements. Visit #[a(target="_blank" href="/account/signup") https://voxbone.ai/account/signup] where you can setup an account with a free DID, test the voice quality of VoxRec, and view the features of various speech analytics engines.
+
+              li#15
+                h4 I didn’t find the answer on the question that bothers me
+                p No worries, drop <a href="mailto:workshop@voxbone.com">email</a> to our Product Manager. He likes to get in touch with users!
+
+    include contact-voxbone

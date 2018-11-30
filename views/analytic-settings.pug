@@ -1,0 +1,159 @@
+extends layout
+
+append head
+  script.
+    require([
+      'angular',
+      'controllers/analyticSettings'
+    ],
+    function (angular, AnalyticsSettingsController) {
+      angular.module('voxbone-ai-frontend', [])
+        .controller('AnalyticsSettingsController', AnalyticsSettingsController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block content
+  - var userData = JSON.stringify(currentUser)
+  .site-wrapper-inner.home-wrap.edit-recording
+    .container(ng-controller="AnalyticsSettingsController" ng-init=`initData={account: ${userData}}`)
+      .row
+        .col-settings
+          .secondary-content.secondary-content-block.ng-cloak
+            h3.underline Edit Speech Analytics Settings
+            span Choose which services to enable:
+            span.badge(data-toggle='tooltip' data-placement="right" title="Pick which transcription service you want to try out. You can choose more than one! (Is mandatory that you pick at least one)") ?
+            .form-group.checkbox
+              label
+                input(type="checkbox" ng-model="googleSpeech.enabled" ng-click="updateServicesDropdown()")
+                | Google Speech
+            .form-group.checkbox.hidden
+              label
+                input(type="checkbox" ng-model="account.analyticSettings.googleSentimentAnalysis.enabled")
+                | Google Sentiment Analysis
+            .form-group.checkbox
+              label
+                input(type="checkbox" ng-model="ibmWatson.enabled" ng-click="updateServicesDropdown()" disabled)
+                | IBM Watson
+            .form-group.checkbox
+              label
+                input(type="checkbox" ng-model="voiceBase.enabled" ng-click="updateServicesDropdown()")
+                | VoiceBase
+
+            hr
+            .form-group
+              label Analytics Service Settings
+                span.badge(data-toggle='tooltip' data-placement="right" ng-model="analyticSettings.service" title="Voxbone is integrated with several speech analytics services. Choose one below.") ?
+              select(class="form-control" ng-model="analyticSettings.service")
+
+                option(ng-repeat="service in services" value="{{service.value}}") {{service.display}}
+
+            .voicebase-container(ng-show="analyticSettings.service === 'voiceBase' && voiceBase.enabled")
+              .form-group
+                label Language
+                  span.badge.round(data-toggle='tooltip' data-placement="right" ng-model="analyticSettings.voiceBase.language" title="Select the spoken language that will be used on the call") ?
+                select(class="form-control" ng-model="analyticSettings.voiceBase.language")
+                  option(ng-repeat="language in voiceBase.languages" value="{{language.value}}") {{language.display}}
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.voiceBase.pciRedaction" disabled)
+                  | PCI Redaction
+                  span.badge(data-toggle='tooltip' data-placement="right" title="Detects PCI sensitive numbers, including: Credit Card, Debit Card, and Payment Card numbers Card expiration dates and CVV validation codes. Contact us to enable this feature!") ?
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.voiceBase.ssnRedaction" disabled)
+                  | SSN Redaction
+                  span.badge.round(data-toggle='tooltip' data-placement="right" title="Detects Social security numbers. Contact us for this feature!") ?
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.voiceBase.numberRedaction" disabled)
+                  | Number Redaction
+                  span.badge.round(data-toggle='tooltip' data-placement="right" title="Detects numbers, to be used for Personally Identifiable Information (PII) numbers that do not fall into above categories. Contact us for this feature!") ?
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.voiceBase.customVocabularyEnabled")
+                  | Custom vocabulary
+                  span.badge.round(data-toggle='tooltip' data-placement="right" title="Customize the speech engine to correctly recognize uncommon words and phrases") ?
+
+              .form-group.analytics-input(ng-hide="!analyticSettings.voiceBase.customVocabularyEnabled")
+                  label Custom vocabulary. Separate with commas
+                  input(type="text" class="form-control" ng-model="analyticSettings.voiceBase.customVocabulary")
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.voiceBase.keywordSpottingEnabled")
+                  | Keyword Spotting
+                  span.badge.round(data-toggle='tooltip' data-placement="right" title="You can define groups of keywords, which are flagged when they are spotted in the recording. Contact us for this feature!") ?
+
+              .form-group.analytics-input(ng-hide="!analyticSettings.voiceBase.keywordSpottingEnabled")
+                  label Keywords. Separate with commas
+                  input(type="text" class="form-control" ng-model="analyticSettings.voiceBase.keywordSpotting")
+
+            .google-speech-container(ng-show="analyticSettings.service === 'googleSpeech' && googleSpeech.enabled")
+              .form-group.clear-bottom
+                label Language
+                  span.badge.round(data-toggle='tooltip' data-placement="right" ng-model="analyticSettings.googleSpeech.language" title="Select the spoken language that will be used on the call") ?
+                select(class="form-control" ng-model="analyticSettings.googleSpeech.language")
+                  option(ng-repeat="language in googleSpeech.languages" value="{{language.value}}") {{language.display}}
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.googleSpeech.speechContextsEnabled")
+                  | Phrase hints
+                  span.badge.round(data-toggle='tooltip' data-placement="right" title="For any given recognition task, you may provide information to aid in processing the given audio. These phrases can boost the probability that such words or phrases will be recognized") ?
+
+              .form-group.analytics-input(ng-hide="!analyticSettings.googleSpeech.speechContextsEnabled")
+                  label Phrase hints. Separate with commas
+                  input(type="text" class="form-control" ng-model="analyticSettings.googleSpeech.speechContexts")
+
+            .ibm-watson-container(ng-show="analyticSettings.service === 'ibmWatson' && ibmWatson.enabled")
+              .form-group
+                label Model
+                  span.badge.round(data-toggle='tooltip' data-placement="right" ng-model="analyticSettings.ibmWatson.model" title="Model") ?
+                select(class="form-control" ng-model="analyticSettings.ibmWatson.model")
+                  option(ng-repeat="model in ibmWatson.models" value="{{model.value}}") {{model.display}}
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.ibmWatson.profanityFilter")
+                  | Profanity Filter
+                  span.badge(data-toggle='tooltip' data-placement="right" title="Filters profanity from all output by replacing inappropriate words with a series of asterisks") ?
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.ibmWatson.smartFormatting")
+                  | Smart Formatting
+                  span.badge.round(data-toggle='tooltip' data-placement="right" title="Converts dates, times, series of digits and numbers, phone numbers, currency values, and Internet addresses into more readable, conventional representations") ?
+
+              .form-group.checkbox
+                label
+                  input(type="checkbox" ng-model="analyticSettings.ibmWatson.keywordSpottingEnabled" disabled)
+                  | Keyword Spotting
+                  span.badge.round(data-toggle='tooltip' data-placement="right" title="Coming soon! You can define groups of keywords, which are flagged when they are spotted in the recording") ?
+
+              .form-group.analytics-input(ng-hide="!analyticSettings.ibmWatson.keywordSpottingEnabled")
+                  label Keywords. Separate with commas
+                  input(type="text" class="form-control" disabled ng-model="analyticSettings.ibmWatson.keywordSpotting")
+
+            .btn#analytics-save(ng-click="saveChanges()") Save
+
+            p.info-txt
+              a(href="mailto:workshop@voxbone.com?subject=Voxbone.ai interest&body=I am interested in learning more about Voxbone's speech analytics services" target="_blank") Contact Us for Help & Details
+
+            .text-center.error-label(ng-show="savingError") Speech Analytics settings could not be saved.
+              br
+              | Please try again
+            .text-center.success-label(ng-show="savedSuccessfully") Speech Analytics settings successfully applied. You will be redirected to the transcriptions page in a few seconds.
+
+            .footer-actions
+              a.back(onclick="location.href='/add-sip'")
+                i.fa.fa-arrow-left
+                span
+                  |Add a SIP address
+              a.next(onclick="location.href='/transcriptions?demo=true'")
+                span
+                  |Transcriptions
+                i.fa.fa-arrow-right

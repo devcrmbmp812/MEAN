@@ -1,0 +1,42 @@
+extends layout
+
+block call-did
+
+block default_auth_nav
+  ul.nav.navbar-nav
+    li.nav-item
+      a.nav-link(href="#" data-toggle="modal" data-target="#contactUs") Contact Us
+
+append unauthenticated-navbar
+  ul.nav.navbar-nav
+    li.nav-item
+      a.nav-link(href="#" data-toggle="modal" data-target="#contactUs") Contact Us
+
+append head
+
+  script.
+    require([
+      'angular',
+      'controllers/faq'
+    ],
+    function (angular, FaqController) {
+      angular.module('voxbone-ai-frontend', [])
+        .controller('FaqController', FaqController);
+      angular.bootstrap(document, ['voxbone-ai-frontend']);
+    });
+
+block content
+  .site-wrapper-inner.home-wrap
+    .container
+      .row.banner-content
+        .col-sm-12.col-md-9
+          h1 PARTNER OPPORTUNITY SIGN UP
+          p.
+            Contracted Voxbone Partners, please register your partner opportunities below for revenue share eligability. In addition, please contact #[a.text-link(href="mailto:workshop@voxbone.com" target="_blank") workshop@voxbone.com] or your Voxbone partner representative to discuss next steps.
+
+          .header-actions
+            a.scroll.btn.btn-mid.btn-voxrec(href="#google-form") Fill the Form
+
+  .google-form#google-form
+    .iframe-wrapper
+      iframe(src="https://docs.google.com/forms/d/e/1FAIpQLScmmlKaZQUs8qCpyMJ7zGLJPgChqVucJKYo-uvJdFmbQYeTEw/viewform?embedded=true#start=invite" width="100%" height="1250" frameborder="0" marginheight="0" marginwidth="0") Loading...

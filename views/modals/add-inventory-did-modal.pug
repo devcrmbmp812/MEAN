@@ -1,0 +1,51 @@
+.modal.fade.add-new-modal#AddInventoryDid(tabindex="-1" role="dialog")
+  .modal.custom-modal.fade.in
+    .modal-dialog.custom-modal-dialog(role="document")
+      .modal-content.custom-modal-content.edit-sip.recordings.ng-cloak
+        .modal-header.custom-modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close" ng-click='setSelectedCall(null)')
+            span(aria-hidden="true") ×
+          h4.modal-title.custom-modal-title(id="callTranscriptions") Inventory DID {{didInfo.e164}}
+
+        .modal-body.custom-modal-body
+          .tab-content
+            .tab-pane.active
+              .didInfo(ng-show="didInfo.e164")
+                .stats
+                  .stat-title
+                    h5 DID Info
+                  .stat-call Type #[br]
+                    strong {{didInfo.type}}
+                  .stat-call Country #[br]
+                    strong {{didInfo.countryCodeA3}}
+                  .stat-call City #[br]
+                    strong {{didInfo.cityName}}
+                  .stat-call WebRTC Enabled? #[br]
+                    strong {{didInfo.webRtc}}
+                .stats
+                  .stat-title
+                    h5(ng-hide="didInfo.conflict") Current Provisioned SIP
+
+                    div(ng-show="didInfo.conflict")
+                      h5 This number is enabled for analytics on a different profile and connected to this Voice URI
+
+              pre.speech-text.hidden
+                span {{didInfo}}
+
+              pre.speech-text
+                span(ng-show="didInfo.e164") {{didInfo.uri || 'No Voice URI Linked'}}
+                span(ng-hide="didInfo.e164") No DID matches that E164 pattern
+
+              div(ng-show="didInfo.conflict")
+                h5 Would you like to proceed with configuration?
+                h5 If not, please link the DID to a Voice URI you desire on Voxbone Portal before enabling analytics.
+
+        .modal-footer.custom-modal-footer
+          button.btn.btn-default-custom(ng-show="didInfo.e164 && !didInfo.conflict" ng-disabled="!didInfo.uri" ng-click="addDid()") Add
+
+          button.btn.btn-default-custom(ng-show="didInfo.conflict" ng-click="addDid()") Confirm
+
+          a(ng-show="(!didInfo.uri && didInfo.e164)" href="https://www.voxbone.com/portal/configuration/configure-numbers?tab=voice" target="_blank")
+            button.btn.btn-default-custom Link Voice URI >>
+
+          button.btn.btn-default-custom(data-dismiss="modal") Dismiss
